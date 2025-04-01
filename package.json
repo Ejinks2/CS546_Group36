@@ -1,0 +1,20 @@
+{
+  "name": "cs546_group36",
+  "version": "1.0.0",
+  "description": "Your local community crime database!",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ejinks2/CS546_Group36.git"
+  },
+  "author": "cs546_group36",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ejinks2/CS546_Group36/issues"
+  },
+  "homepage": "https://github.com/Ejinks2/CS546_Group36#readme"
+}
