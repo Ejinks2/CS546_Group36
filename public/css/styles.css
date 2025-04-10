@@ -1,0 +1,28 @@
+body {
+    color: #293F56;
+    background-color: #C2E0FD;
+    justify-content: center;
+    display: flex;
+    width: 100%;
+}
+
+h1 {
+    font-size: 45px;
+    text-align: center;
+    margin-top: 2%;
+    margin-bottom: 0.5%;
+}
+
+h2 {
+    font-size: 30px;
+    text-align: center;
+    margin: 0;
+    font-style: italic;
+}
+
+#homeHeader {
+    background-color: aliceblue;
+    border-radius: 25px;
+    width: 110%;
+    height: 105%;
+}
