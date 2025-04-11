@@ -1,9 +1,6 @@
 body {
     color: #293F56;
     background-color: #C2E0FD;
-    justify-content: center;
-    display: flex;
-    width: 100%;
 }
 
 h1 {
@@ -20,9 +17,19 @@ h2 {
     font-style: italic;
 }
 
-#homeHeader {
+nav {
+    text-align: center;
+}
+
+nav a {
+    padding: 5%;
+    display: inline;
+    margin: 2%;
+}
+
+.homeHeader {
     background-color: aliceblue;
     border-radius: 25px;
-    width: 110%;
+    width: 100%;
     height: 105%;
 }

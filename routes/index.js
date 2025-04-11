@@ -1,4 +1,5 @@
 import adminRoute from "./adminRoutes.js";
+import userRoutes from "./userRoutes.js";
 import { Router } from "express";
 const router = Router();
 router.route('').get(async (req, res) => {
