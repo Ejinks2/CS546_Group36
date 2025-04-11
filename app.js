@@ -29,15 +29,11 @@ app.use((err, req, res, next) => {
 });
 
 // Start server after DB connects
-const main = async () => {
-  try {
-    await connectToDb();
-    app.listen(3000, () => {
-      console.log("Server is running at http://localhost:3000");
-    });
-  } catch (e) {
-    console.error('Failed to connect to the database or start server:', e);
-  }
-};
-
-main();
+try {
+  await connectToDb();
+  app.listen(3000, () => {
+    console.log("Server is running at http://localhost:3000");
+  });
+} catch (e) {
+  console.error('Failed to connect to the database or start server:', e);
+}
