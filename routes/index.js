@@ -1,5 +1,6 @@
-import adminRoute from "./adminRoutes.js";
+import adminRoute from './adminRoutes.js';
 import crimeRoutes from './crimeRoutes.js';
+import reportRoutes from './reportRoutes.js';
 
 import { Router } from "express";
 const router = Router();
@@ -12,6 +13,7 @@ const setRoutes = (app) => {
 
     app.use('/admin', adminRoute);
     app.use('/search', crimeRoutes); // for official crime data
+    app.use('/report', reportRoutes);
 
     app.use(/(.*)/, (req, res) => {
         res.status(404).json({ error: "Page not found. "});
