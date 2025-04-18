@@ -19,12 +19,26 @@ h2 {
 
 nav {
     text-align: center;
+    padding-top: 2%;
+    padding-bottom: 1%;
 }
 
 nav a {
-    padding: 5%;
     display: inline;
-    margin: 2%;
+    margin-left: 3%;
+    margin-right: 3%;
+    padding: 1%;
+    transition: background-color 0.5s ease;
+    color: #293F56;
+}
+
+nav a:hover {
+    background-color: #E1F1FF;
+}
+
+nav a:visited, nav a, nav a:hover, nav a:active {
+    font-style: normal;
+    text-decoration: none;
 }
 
 .homeHeader {
