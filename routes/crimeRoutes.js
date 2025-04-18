@@ -38,4 +38,19 @@ router.route("/")
   }
 });
 
+router.route("/trends")
+.get(async (req, res) => {
+  try {
+    const officialCrimeList = await getOfficialCrimes();
+
+    const limitedCrimes = officialCrimeList.slice(0, 50);
+    res.render("trends", { // just render sample chart for now
+      title: "Crime Trends",
+      crimes: JSON.stringify(limitedCrimes),
+    });
+  } catch (e) {
+    res.status(500).render("search", { error: "Error displaying trends" });
+  }
+})
+
 export default router;
