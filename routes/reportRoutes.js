@@ -8,7 +8,8 @@ const router = Router();
 router.get('/', async (req, res) => {
   try {
     res.render('report', {
-      title: 'Submit a Crime Report'
+      title: 'Submit a Crime Report',
+      links: { Home: '/', Admin: '/admin', Search: '/search'}
     });
   } catch (e) {
     res.status(500).render('error', { message: 'Error loading form' });
