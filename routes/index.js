@@ -13,7 +13,9 @@ const setRoutes = (app) => {
 
     app.use('/admin', adminRoute);
     app.use('/search', crimeRoutes); // for official crime data
-    app.use('/report', reportRoutes);
+
+    app.use('/report', reportRoutes); // user-submitted reports
+    
 
     app.use(/(.*)/, (req, res) => {
         res.status(404).json({ error: "Page not found. "});
