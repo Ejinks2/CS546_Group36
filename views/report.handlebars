@@ -1,9 +1,10 @@
 <main>
   <h4>Crime details:</h4>
+  <p>{{error}}</p>
   <form method="POST" action="/report">
     <label>
       Offense:
-      <select id="offense-dropdown-input" name="offense-dropdown-input">
+      <select id="offense" name="offense">
         <option value="ROBBERY">ROBBERY</option>
         <option value="BURGLARY">BURGLARY</option>
         <option value="RAPE">RAPE</option>
@@ -13,7 +14,7 @@
     <br>
     <label>
       Borough:
-      <select id="borough-dropdown-input" name="borough-dropdown-input">
+      <select id="borough" name="borough">
         <option value="Manhattan">Manhattan</option>
         <option value="Brooklyn">Brooklyn</option>
         <option value="Queens">Queens</option>
@@ -24,17 +25,17 @@
     <br>
     <label>
       Time of Incident:
-      <input type="datetime-local" id="crime-date-input" name="crime-date-input">
+      <input type="datetime-local" id="date" name="date">
     </label>
     <br>
     <label>
       Location of Incident:
-      <input type="text" id="crime-location-input" name="crime-location-input">
+      <input type="text" id="location" name="location">
     </label>
     <br>
     <label>
       Description of Incident:
-      <input type="text" id="incident-desc-input" name="incident-desc-input">
+      <input type="text" id="description" name="description">
     </label>
     <br>
     <input type="submit" id="submit-data" name="submit-data">
