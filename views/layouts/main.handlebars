@@ -6,6 +6,15 @@
         <link rel="stylesheet" href="/css/styles.css">
     </head>
     <body>
+        <div class="header">
+            <h1>{{title}}</h1>
+            <h2>{{description}}</h2>
+            <nav>
+                {{#each links}}
+                <a href={{this}}>{{@key}}</a>
+                {{/each}}
+            </nav>
+        </div>
         {{{ body }}}
         <a href="/">Return Home</a>
     </body>
