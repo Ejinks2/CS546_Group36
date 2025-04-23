@@ -1,0 +1,13 @@
+<h1>{{title}}</h1>
+<main>
+  <form action="/search" method="POST">
+    <label id="search-crimes"></label>
+    <input type="text" id="searchCrime" name="searchCrime" placeholder="Search for Crime...">
+    <input type="submit">
+  </form>
+  <ul>
+    {{#each crimes}}
+    <li>Borough: {{borough}}, Offense: {{offense}}, Date: {{date}}</li>
+    {{/each}}
+  </ul>
+</main>
