@@ -7,7 +7,7 @@ const router = Router();
 router.route('/').get(async (req, res) => {
     res.render('home', { 
         title: 'Homepage' , 
-        links: { Admin: '/admin', Search: '/search', Report: '/report' },
+        links: { Home: '/', Admin: '/admin', Search: '/search', Report: '/report' },
         description: "Know what's going on around you!"})
 });
 

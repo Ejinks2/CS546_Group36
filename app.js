@@ -2,6 +2,8 @@ import express from 'express';
 import exphbs from 'express-handlebars';
 import { connectToDb } from './config/mongoConnection.js';
 import routes from './routes/index.js';
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -14,18 +16,38 @@ app.use(express.urlencoded({ extended: true }));
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
+app.use(cookieParser());
+app.use(
+  session({
+    name: "CrimeDB",
+    secret: "Hidden admin page!",
+    saveUninitialized: false,
+    resave: false,
+    cookie: { maxAge: 60000 }
+  })
+);
+
+app.use('/admin', (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/');
+  }
+  next();
+});
+
 // Register routes
 routes(app);
 
 // 404 handler
 app.use((req, res, next) => {
   res.status(404).render('error', { message: 'Page not found (404)' });
+  next();
 });
 
 // General error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).render('error', { message: 'Something went wrong (500)' });
+  next();
 });
 
 // Start server after DB connects

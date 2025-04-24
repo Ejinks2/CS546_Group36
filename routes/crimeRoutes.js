@@ -15,7 +15,7 @@ router.route("/")
 
     res.render("search", {
       title: "Search Official Crime Records",
-      links: { Home: '/', Admin: '/admin', Report: '/report'},
+      links: { Home: '/', Admin: '/admin', Search: '/search', Report: '/report' },
       crimes: limitedCrimes,
     });
   } catch (e) {
