@@ -1,43 +1,63 @@
 import express from 'express';
-import {getOfficialCrimes} from "../data/officialCrimes.js";
-import { getAllReports } from '../data/userReports.js';
+import { getOfficialCrimes } from "../data/officialCrimes.js";
+import { getUserReports } from '../data/userReports.js';
+import * as stringValidation from '../validations/stringValidation.js';
 
 const router = express.Router();
 
-//Get Official crimes
+// GET /search - Filtered official or user-submitted crimes
 router.route('/')
-.get(async(req,res) => {
-    try{
-        // Filters
-        const { borough, offense, startDate, endDate, source } = req.query;
+  .get(async (req, res) => {
+    try {
+      const { borough, offense, startDate, endDate, source } = req.query;
 
-        const filters = {
-          borough,
-          offense,
-          startDate,
-          endDate
-        };
-    
-        let crimeList = [];
-    
-        if (source === 'user') {
-          crimeList = await getAllReports(filters);
-        } else {
-          crimeList = await getOfficialCrimes(filters);
-        }
-    
-        // Limit for testing
-        const limitedCrimes = crimeList.slice(0, 50);
-    
-        res.render('search', {
-          title: 'Search Official Crime Records',
-          crimes: limitedCrimes
-        });
+      const filters = {
+        borough,
+        offense,
+        startDate,
+        endDate
+      };
 
-    }catch(e){
-        res.status(500).render('error', { message: 'Error loading crime data' });
+      let crimeList = [];
+
+      if (source === 'user') {
+        crimeList = await getUserReports(filters); // assumes you've added filtering to user reports
+      } else {
+        crimeList = await getOfficialCrimes(filters);
+      }
+
+      const limitedCrimes = crimeList.slice(0, 50);
+
+      res.render('search', {
+        title: 'Search Crime Records',
+        crimes: limitedCrimes
+      });
+
+    } catch (e) {
+      res.status(400).render('search', {
+        error: e,
+        title: "Search Crime Records"
+      });
     }
-});
+  });
 
+
+// GET /trends - placeholder for chart rendering
+router.route("/trends")
+  .get(async (req, res) => {
+    try {
+      const officialCrimeList = await getOfficialCrimes();
+      const limitedCrimes = officialCrimeList.slice(0, 50);
+
+      res.render("trends", {
+        title: "Crime Trends",
+        crimes: JSON.stringify(limitedCrimes)
+      });
+    } catch (e) {
+      res.status(500).render("search", {
+        error: "Error displaying trends"
+      });
+    }
+  });
 
 export default router;
