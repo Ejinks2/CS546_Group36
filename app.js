@@ -2,6 +2,7 @@ import express from 'express';
 import exphbs from 'express-handlebars';
 import { connectToDb } from './config/mongoConnection.js';
 import routes from './routes/index.js';
+import { loadCrimeData } from './seed/loadCrimeData.js';
 
 const app = express();
 
@@ -40,4 +41,5 @@ const main = async () => {
   }
 };
 
+loadCrimeData();
 main();

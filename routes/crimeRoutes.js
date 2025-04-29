@@ -1,5 +1,6 @@
 import express from 'express';
 import {getOfficialCrimes} from "../data/officialCrimes.js";
+import { getAllReports } from '../data/userReports.js';
 
 const router = express.Router();
 
@@ -7,11 +8,27 @@ const router = express.Router();
 router.route('/')
 .get(async(req,res) => {
     try{
-        const officialCrimeList = await getOfficialCrimes();
+        // Filters
+        const { borough, offense, startDate, endDate, source } = req.query;
 
-        //Limiting ammount of crimes for testing
-        const limitedCrimes = officialCrimeList.slice(0, 50);
-
+        const filters = {
+          borough,
+          offense,
+          startDate,
+          endDate
+        };
+    
+        let crimeList = [];
+    
+        if (source === 'user') {
+          crimeList = await getAllReports(filters);
+        } else {
+          crimeList = await getOfficialCrimes(filters);
+        }
+    
+        // Limit for testing
+        const limitedCrimes = crimeList.slice(0, 50);
+    
         res.render('search', {
           title: 'Search Official Crime Records',
           crimes: limitedCrimes
