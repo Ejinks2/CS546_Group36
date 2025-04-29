@@ -1,6 +1,6 @@
 import express from 'express';
 import { getOfficialCrimes } from "../data/officialCrimes.js";
-import { getUserReports } from '../data/userReports.js';
+import { getAllReports} from '../data/userReports.js';
 import * as stringValidation from '../validations/stringValidation.js';
 
 const router = express.Router();
@@ -21,7 +21,7 @@ router.route('/')
       let crimeList = [];
 
       if (source === 'user') {
-        crimeList = await getUserReports(filters); // assumes you've added filtering to user reports
+        crimeList = await getAllReports(filters); 
       } else {
         crimeList = await getOfficialCrimes(filters);
       }
