@@ -23,16 +23,34 @@ app.use(
     secret: "Hidden admin page!",
     saveUninitialized: false,
     resave: false,
-    cookie: { maxAge: 60000 }
+    cookie: { maxAge: 1800000 } //maxAge = 30 mins
   })
 );
 
 app.use('/admin', (req, res, next) => {
   if (!req.session.user) {
-    return res.redirect('/');
+    return res.redirect('/login');
   }
   next();
 });
+
+app.use('/login', (req, res, next) => {
+  if (req.session.user) {
+    return res.redirect('/admin');
+  }
+
+  next();
+})
+
+app.use('/logout', (req, res, next) => {
+  req.session.user = null;
+  return res.redirect('/login');
+})
+
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
+})
 
 // Register routes
 routes(app);

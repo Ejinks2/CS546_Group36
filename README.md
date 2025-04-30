@@ -24,3 +24,9 @@ The Crime Analysis Web Application aims to provide users with insights into crim
 * Finds the nearest police station and displays the stations’ phone number.
 * Suspect Description
 * Allow users to describe a suspect in a crime.
+
+### Admin Logins
+----------------
+
+* Username: admin1      Password: Pass@123
+* Username: user2       Password: testPassword!123
