@@ -2,6 +2,8 @@ import express from 'express';
 import exphbs from 'express-handlebars';
 import { connectToDb } from './config/mongoConnection.js';
 import routes from './routes/index.js';
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
 import { loadCrimeData } from './seed/loadCrimeData.js';
 
 const app = express();
@@ -15,18 +17,56 @@ app.use(express.urlencoded({ extended: true }));
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
+app.use(cookieParser());
+app.use(
+  session({
+    name: "CrimeDB",
+    secret: "Hidden admin page!",
+    saveUninitialized: false,
+    resave: false,
+    cookie: { maxAge: 1800000 } //maxAge = 30 mins
+  })
+);
+
+app.use('/admin', (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/login');
+  }
+  next();
+});
+
+app.use('/login', (req, res, next) => {
+  if (req.session.user) {
+    return res.redirect('/admin');
+  }
+
+  next();
+})
+
+app.use('/logout', (req, res, next) => {
+  req.session.user = null;
+  return res.redirect('/login');
+})
+
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
+})
+
 // Register routes
 routes(app);
 
 // 404 handler
 app.use((req, res, next) => {
   res.status(404).render('error', { message: 'Page not found (404)' });
+  next();
 });
 
 // General error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).render('error', { message: 'Something went wrong (500)' });
+  next();
 });
 
 // Start server after DB connects
