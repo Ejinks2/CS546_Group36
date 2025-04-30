@@ -8,7 +8,8 @@ const router = Router();
 router.get('/', async (req, res) => {
   try {
     res.render('report', {
-      title: 'Submit a Crime Report'
+      title: 'Submit a Crime Report',
+      links: { Home: '/', Admin: '/admin', Search: '/search'}
     });
   } catch (e) {
     res.status(500).render('error', { message: 'Error loading form' });
@@ -17,11 +18,10 @@ router.get('/', async (req, res) => {
 
 // POST /report
 router.post('/', async (req, res) => {
+  //console.log(req.body)
   try {
-    const reportData = req.body;
-
     // Validate report
-    validateReportInput(reportData);
+    const reportData = validateReportInput(req.body);
 
     // Save to DB
     const newReport = await createReport(reportData);
@@ -30,7 +30,8 @@ router.post('/', async (req, res) => {
     res.render('report', {
       title: 'Submit a Crime Report',
       success: true,
-      report: newReport
+      report: newReport,
+      error: "none"
     });
     
   } catch (e) {

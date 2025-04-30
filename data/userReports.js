@@ -14,8 +14,8 @@ export const createReport = async (data) => {
   const newReport = {
     offense: data.offense?.trim(),
     location: data.location?.trim(),
+    borough: data.borough?.trim(),
     city: data.city?.trim(),
-    state: data.state?.trim(),
     description: data.description?.trim(),
     date: data.date,
     status: 'pending',

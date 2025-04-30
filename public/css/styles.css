@@ -41,7 +41,7 @@ nav a:visited, nav a, nav a:hover, nav a:active {
     text-decoration: none;
 }
 
-.homeHeader {
+.header {
     background-color: aliceblue;
     border-radius: 25px;
     width: 100%;
