@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // View engine
-app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
+app.engine('handlebars', exphbs.engine({ defaultLayout: 'main', partialsDir: ['views/partials/'] }));
 app.set('view engine', 'handlebars');
 
 app.use(cookieParser());
