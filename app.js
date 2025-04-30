@@ -5,6 +5,7 @@ import routes from './routes/index.js';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import { loadCrimeData } from './seed/loadCrimeData.js';
+import { seedUsers } from './seed/userSeed.js';
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // View engine
-app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
+app.engine('handlebars', exphbs.engine({ defaultLayout: 'main', partialsDir: ['views/partials/'] }));
 app.set('view engine', 'handlebars');
 
 app.use(cookieParser());
@@ -82,4 +83,5 @@ const main = async () => {
 };
 
 loadCrimeData();
+await seedUsers();
 main();

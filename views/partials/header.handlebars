@@ -1,0 +1,12 @@
+<div class="header">
+    <h1>{{title}}</h1>
+    <h2>{{description}}</h2>
+    <nav>
+        {{#each links}}
+        <a href={{this}}>{{@key}}</a>
+        {{/each}}
+        {{#if user}}
+            <a href="/logout">Logout</a>
+        {{/if}}
+    </nav>
+</div>

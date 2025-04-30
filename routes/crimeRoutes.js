@@ -46,36 +46,35 @@ router.route("/")
   }
 });
 
+  //     const filters = {
+  //       borough,
+  //       offense,
+  //       startDate,
+  //       endDate
+  //     };
 
-      const filters = {
-        borough,
-        offense,
-        startDate,
-        endDate
-      };
+  //     let crimeList = [];
 
-      let crimeList = [];
+  //     if (source === 'user') {
+  //       crimeList = await getAllReports(filters); 
+  //     } else {
+  //       crimeList = await getOfficialCrimes(filters);
+  //     }
 
-      if (source === 'user') {
-        crimeList = await getAllReports(filters); 
-      } else {
-        crimeList = await getOfficialCrimes(filters);
-      }
+  //     const limitedCrimes = crimeList.slice(0, 50);
 
-      const limitedCrimes = crimeList.slice(0, 50);
+  //     res.render('search', {
+  //       title: 'Search Crime Records',
+  //       crimes: limitedCrimes
+  //     });
 
-      res.render('search', {
-        title: 'Search Crime Records',
-        crimes: limitedCrimes
-      });
-
-    } catch (e) {
-      res.status(400).render('search', {
-        error: e,
-        title: "Search Crime Records"
-      });
-    }
-  });
+  //   } catch (e) {
+  //     res.status(400).render('search', {
+  //       error: e,
+  //       title: "Search Crime Records"
+  //     });
+  //   }
+  // });
 
 
 // GET /trends - placeholder for chart rendering
