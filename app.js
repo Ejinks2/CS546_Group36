@@ -5,6 +5,7 @@ import routes from './routes/index.js';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import { loadCrimeData } from './seed/loadCrimeData.js';
+import { seedUsers } from './seed/userSeed.js';
 
 const app = express();
 
@@ -82,4 +83,5 @@ const main = async () => {
 };
 
 loadCrimeData();
+await seedUsers();
 main();
