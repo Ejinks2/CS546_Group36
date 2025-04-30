@@ -14,8 +14,8 @@ export const createReport = async (data) => {
   const newReport = {
     offense: data.offense?.trim(),
     location: data.location?.trim(),
+    borough: data.borough?.trim(),
     city: data.city?.trim(),
-    state: data.state?.trim(),
     description: data.description?.trim(),
     date: data.date,
     status: 'pending',
@@ -32,8 +32,32 @@ export const createReport = async (data) => {
 };
 
 // Fetch all user-submitted reports
-export const getAllReports = async () => {
+export const getAllReports = async (filters = {}) => {
   const db = await connectToDb();
   const collection = db.collection('userReports');
-  return await collection.find({}).toArray();
+  const query = {};
+
+  // Borough
+  if (filters.city) {
+    query.city = { $regex: filters.city, $options: 'i' };
+  }
+
+  if (filters.state) {
+    query.state = { $regex: filters.state, $options: 'i' };
+  }
+
+  // Crime type 
+  if (filters.offense) {
+    query.offense = { $regex: filters.offense, $options: 'i' };
+  }
+
+  // Date range
+  if (filters.startDate || filters.endDate) {
+    query.date = {};
+    if (filters.startDate) query.date.$gte = filters.startDate;
+    if (filters.endDate) query.date.$lte = filters.endDate;
+  }
+
+
+  return await collection.find(query).toArray();
 };
