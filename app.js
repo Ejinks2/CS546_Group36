@@ -2,6 +2,7 @@ import express from 'express';
 import exphbs from 'express-handlebars';
 import { connectToDb } from './config/mongoConnection.js';
 import routes from './routes/index.js';
+import { loadCrimeData } from './seed/loadCrimeData.js';
 
 const app = express();
 
@@ -29,11 +30,16 @@ app.use((err, req, res, next) => {
 });
 
 // Start server after DB connects
-try {
-  await connectToDb();
-  app.listen(3000, () => {
-    console.log("Server is running at http://localhost:3000");
-  });
-} catch (e) {
-  console.error('Failed to connect to the database or start server:', e);
-}
+const main = async () => {
+  try {
+    await connectToDb();
+    app.listen(3000, () => {
+      console.log("Server is running at http://localhost:3000");
+    });
+  } catch (e) {
+    console.error('Failed to connect to the database or start server:', e);
+  }
+};
+
+loadCrimeData();
+main();

@@ -23,4 +23,4 @@ const loadCrimeData = async () => {
   }
 };
 
-loadCrimeData();
+export {loadCrimeData};
