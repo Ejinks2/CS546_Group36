@@ -1,34 +1,83 @@
 <h1>{{title}}</h1>
 <div>
+  <div id="boroughFilters">Sort by Borough: </div>
+  <div id="offenseFilters"> Sort by Offense: 
+    <ul id="offenseSearch"></ul>
+  </div>
   <canvas id="myChart"></canvas>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/js/charts.js"></script>
 
 <script>
   const ctx = document.getElementById('myChart');
   const crimeData = {{{crimes}}};
-  let boroughArr = [];
-  for (let c of crimeData){
-    const checkBorough = boroughArr.findIndex((elem) => elem.borough === c.borough);
-    if (checkBorough === -1) boroughArr.push({borough: c.borough, count: 1});
-    else boroughArr[checkBorough].count += 1;
-  }
+  
+  const uniqueBoroughs = [...new Set(crimeData.map(crime => crime.borough))];
+  const uniqueCrimes = [...new Set(crimeData.map(crime => crime.offense))];
+  const bfilters = document.getElementById("boroughFilters");
+  uniqueBoroughs.forEach(borough => {
+    let bButton = document.createElement("button");
+    bButton.textContent = borough;
+    bButton.id = borough;
+    bfilters.appendChild(bButton);
+  });
+
+  const cfilters = document.getElementById("offenseSearch");
+  uniqueCrimes.forEach(crime => {
+    let listItem = document.createElement("li");
+    let cButton = document.createElement("button");
+    cButton.textContent = crime;
+    cButton.id = crime;
+    listItem.appendChild(cButton);
+    cfilters.appendChild(listItem);
+  });
+
+
+
+  let boroughCrimes = {};
+  crimeData.forEach(crime => {
+      boroughCrimes[crime.borough] = (boroughCrimes[crime.borough] || 0) + 1;
+  });
+
+  
+
   //console.log(crimeData.length);
 
-  new Chart(ctx, {
-      type: 'bar',
-      data: {
-          datasets: [{
-              label: '# of crimes in borough',
-              data: boroughArr,
-          }]
-      },
-      options: {
-          parsing: {
-              xAxisKey: 'borough',
-              yAxisKey: 'count'
+  let crimeChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: Object.keys(boroughCrimes),
+      datasets: [{
+        label: 'Number of Crimes per Borough',
+        data: Object.values(boroughCrimes),
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Crime Count'
+          },
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Borough'
           }
+        }
+      }
+    }
+  });
+
+   document.getElementById("boroughFilters").addEventListener("click", e => {
+      if (e.target.tagName === "BUTTON") {
+        const borough = e.target.id;
+        const filtered = borough === "(null)" ? crimeData : crimeData.filter(c => c.borough === borough);
+        crimeChart = updateChartb(filtered, document.getElementById("myChart"), crimeChart);
       }
   });
-</script>
+  </script>
