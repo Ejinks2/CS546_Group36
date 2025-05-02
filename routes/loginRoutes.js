@@ -7,7 +7,10 @@ router
         .get(async (req, res) => {
             let error = "";
             if (req.status === 400) error = "Could not log in.";
-            res.render('login', {error});
+            res.render('login', {
+                error, title: "Login", 
+                links: { Home: '/', Admin: '/admin', Search: '/search', Report: '/report' }
+            });
         })
         .post(async (req, res) => {
             const user = req.body;
