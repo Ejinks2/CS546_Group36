@@ -2,9 +2,10 @@
     <h1>{{title}}</h1>
     <h2>{{description}}</h2>
     <nav>
-        {{#each links}}
-        <a href={{this}}>{{@key}}</a>
-        {{/each}}
+        <a href="/">Home</a>
+        <a href="/admin">Admin</a>
+        <a href="/search">Search</a>
+        <a href="/report">Report</a>
         {{#if user}}
             <a href="/logout">Logout</a>
         {{/if}}

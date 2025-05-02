@@ -31,7 +31,6 @@ router.post('/', async (req, res) => {
       title: 'Submit a Crime Report',
       success: true,
       report: newReport,
-      error: "none"
     });
     
   } catch (e) {
