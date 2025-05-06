@@ -1,0 +1,30 @@
+<ul id="users">
+    {{#each users}}
+        <li>
+            <h2>{{username}}</h2>
+            <ul id="reports">
+                {{#each reports}}
+                    <h3>{{offense}}</h3>
+                    <h4>{{location}}, {{borough}}</h4>
+                    <h4>{{description}}</h4>
+                    <h4>{{date}}</h4>
+                    <form method="post" id="acceptReport">
+                        <button type="submit">Approve</button>
+                        <button type="submit">Deny</button>
+                    </form>
+                {{/each}}
+            </ul>
+            <ul id="comments">
+                {{#each comments}}
+                    <h3>{{userId}}</h3>
+                    <h4>{{content}}</h4>
+                    <h4>{{date}}</h4>
+                {{/each}}
+            </ul>
+
+            <form method="post" id="userBan">
+                <button type="submit">Remove User</button>
+            </form>
+        </li>
+    {{/each}}
+</ul>
