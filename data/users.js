@@ -33,6 +33,8 @@ export const register = async (username, password, email) => {
     username = username.trim();
     password = password.trim();
 
+    username = username.toLowerCase();
+
     if (!username || !password) throw "Invalid username or password.";
 
     const uname = /^[a-zA-Z0-9]+$/;
@@ -45,6 +47,12 @@ export const register = async (username, password, email) => {
     const emailFormat = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/
     if (!email) throw "Must enter an email.";
     if (!emailFormat.test(email)) throw "Invalid email.";
+
+    const duplicateName = await users.findOne({ username });
+    if (duplicateName) throw "Username already taken.";
+
+    const duplicateEmail = await users.findOne({ email });
+    if (duplicateEmail) throw "Email already taken.";
 
     const date = new Date();
     const newDate = `${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}/${String(date.getFullYear())}`;
