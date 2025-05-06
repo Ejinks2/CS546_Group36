@@ -1,11 +1,13 @@
-<form id="registration-form">
-    <label for="username">Username</label>
-    <input id="username" name="username">
-    <label for="password">Password</label>
-    <input id="password" name="password" type="password">
-    <label for="confirmPass">Confirm Password</label>
-    <input id="confirmPass" type="password">
-    <p>I acknowledge that the things that I do, say, and post will be recorded and that I will be held accountable for these things.</p>
-    <label for="acknowledged">I agree and understand.</label>
-    <input id="acknowledged" type="checkbox">
+<form id="registration-form" method="POST" action="/register">
+  <label for="username">Username</label>
+  <input id="username" name="username">
+  <label for="password">Password</label>
+  <input id="password" name="password" type="password">
+  <label for="confirmPass">Confirm Password</label>
+  <input id="confirmPass" type="password">
+  <p>I acknowledge that the things that I do, say, and post will be recorded and that I will be held accountable for these things.</p>
+  <label for="acknowledged">I agree and understand.</label>
+  <input id="acknowledged" type="checkbox">
+  <br>
+  <button name="submitButton" id="submitButton">Register</button>
 </form>
