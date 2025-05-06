@@ -3,11 +3,18 @@
     <h2>{{description}}</h2>
     <nav>
         <a href="/">Home</a>
-        <a href="/admin">Admin</a>
+        {{#if user.admin}}
+            <a href="/admin">Admin</a>
+            <a href="/users">Users</a>
+        {{/if}}
         <a href="/search">Search</a>
-        <a href="/report">Report</a>
         {{#if user}}
+            <a href="/report">Report</a>
             <a href="/logout">Logout</a>
         {{/if}}
+        {{#unless user}}
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        {{/unless}}
     </nav>
 </div>

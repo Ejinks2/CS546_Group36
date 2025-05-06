@@ -32,27 +32,56 @@ app.use(
 app.use('/admin', (req, res, next) => {
   if (!req.session.user) {
     return res.redirect('/login');
+  } else if (!req.session.user.admin) {
+    return res.redirect('/users');
   }
+
   next();
 });
 
 app.use('/login', (req, res, next) => {
   if (req.session.user) {
-    return res.redirect('/admin');
+    if (req.session.user.admin) return res.redirect('/admin');
+    return res.redirect('/users');
   }
+
+  next();
+});
+
+app.use('/register', (req, res, next) => {
+  if (req.session.user) {
+    if (req.session.user.admin) return res.redirect('/admin');
+    return res.redirect('/users');
+  }
+
+  next();
+});
+
+app.use('/users', (req, res, next) => {
+  if (!req.session.user || !req.session.user.admin) return res.redirect('/home');
+
+  next();
+})
+
+app.use('/report', (req, res, next) => {
+  if (!req.session.user) return res.redirect('/login');
 
   next();
 })
 
 app.use('/logout', (req, res, next) => {
-  req.session.user = null;
-  return res.redirect('/login');
-})
+  if (req.session.user) {
+    req.session.user = null;
+    return res.redirect('/login');
+  }
+
+  next();
+});
 
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   next();
-})
+});
 
 // Register routes
 routes(app);
@@ -82,6 +111,6 @@ const main = async () => {
   }
 };
 
-loadCrimeData();
+await loadCrimeData();
 await seedUsers();
 main();

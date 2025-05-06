@@ -37,8 +37,7 @@ router.post('/', async (req, res) => {
     res.status(400).render('report', {
       title: 'Submit a Crime Report',
       error: typeof e === 'string' ? e : 'Invalid input. Please try again.',
-      input: req.body,
-      links: { Home: '/', Admin: '/admin', Search: '/search', Report: '/report' }
+      input: req.body
     });
   }
 });
