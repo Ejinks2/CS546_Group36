@@ -41,7 +41,7 @@ let errors = document.getElementById('errors');
 let errList = [];
 
 if (registrationForm) {
-    registrationForm.addEventListener('submit', function(event) {
+    registrationForm.addEventListener('submit', async function(event) {
         errors.innerHTML = '';
         errList = [];
         errors.hidden = true;

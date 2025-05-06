@@ -3,7 +3,8 @@ const router = Router();
 import { register } from "../data/users.js";
 
 router.route('').get(async (req, res) => {
-    return res.render('register', { title: "Register" });
+    const error = req.query.error;
+    return res.render('register', { title: "Register", error });
 })
 .post(async (req, res) => {
     try {
@@ -11,7 +12,7 @@ router.route('').get(async (req, res) => {
         await register(user.username, user.password, user.userEmail);
         return res.redirect('/home');
     } catch (e) {
-        return res.redirect('/register?registrationFailed=true');
+        return res.redirect(`/register?error=${e}`);
     }
 })
 

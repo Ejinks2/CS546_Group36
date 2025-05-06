@@ -13,4 +13,8 @@
     <button>Submit</button>
 </form>
 
-<ul id="errors" hidden></ul>
+{{#if hidden}}
+    <ul id="errors" hidden>{{error}}</ul>
+{{else}}
+    <ul id="errors">{{error}}</ul>
+{{/if}}

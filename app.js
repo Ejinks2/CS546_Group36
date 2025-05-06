@@ -51,7 +51,7 @@ app.use('/login', (req, res, next) => {
 app.use('/register', (req, res, next) => {
   if (req.session.user) {
     if (req.session.user.admin) return res.redirect('/admin');
-    return res.redirect('/users');
+    return res.redirect('/home');
   }
 
   next();
