@@ -1,0 +1,20 @@
+<main>
+  <section class="feed">
+    {{#each userReport}}
+    <article class="userPost">
+      <header>
+        <h2>{{offense}}</h2>
+        <time datetime="{{dateISO}}">{{date}}</time>
+      </header>
+
+      <div class="secondary">
+        <span class="location">{{location}}</span>
+        <span class="borough">{{borough}}</span> ·
+        <span class="status status-{{status}}">{{status}}</span>
+      </div>
+
+      <p class="description">{{description}}</p>
+    </article>
+    {{/each}}
+  </section>
+</main>
