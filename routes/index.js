@@ -4,6 +4,7 @@ import reportRoutes from './reportRoutes.js';
 import userRoutes from './userRoutes.js';
 import loginRoutes from './loginRoutes.js';
 import registration from './registerRoutes.js';
+import userReportRoutes from './userReportRoutes.js';
 
 import { Router } from "express";
 const router = Router();
@@ -34,6 +35,7 @@ const setRoutes = (app) => {
     app.use('/users', userRoutes);
     app.use('/search', searchRoutes); // for official crime data
 
+    app.use('/reportfeed', userReportRoutes); // for feed of reports
     app.use('/report', reportRoutes); // user-submitted reports
     app.use('/login', loginRoutes); //for admin login
     app.use('/register', registration);
