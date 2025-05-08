@@ -54,44 +54,10 @@
 
 
 
-  let boroughCrimes = {};
-  crimeData.forEach(crime => {
-      boroughCrimes[crime.borough] = (boroughCrimes[crime.borough] || 0) + 1;
-  });
+  let crimeChart;
+  crimeChart = updateChartC(crimeData, ctx, crimeChart, "ALL");
 
-  
-
-  //console.log(crimeData.length);
-
-  let crimeChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: Object.keys(boroughCrimes),
-      datasets: [{
-        label: 'Number of Crimes per Borough',
-        data: Object.values(boroughCrimes),
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: 'Crime Count'
-          },
-        },
-        x: {
-          title: {
-            display: true,
-            text: 'Borough'
-          }
-        }
-      }
-    }
-  });
-
-   document.getElementById("boroughFilters").addEventListener("click", e => {
+  document.getElementById("boroughFilters").addEventListener("click", e => {
       if (e.target.tagName === "BUTTON") {
         const borough = e.target.id;
         const filtered = borough === "ALL" ? crimeData : crimeData.filter(c => c.borough === borough);
