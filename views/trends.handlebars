@@ -16,6 +16,8 @@
   
   const uniqueBoroughs = [...new Set(crimeData.map(crime => crime.borough))];
   const uniqueCrimes = [...new Set(crimeData.map(crime => crime.offense))];
+  uniqueBoroughs.push("ALL");
+  uniqueCrimes.push("ALL");
   const bfilters = document.getElementById("boroughFilters");
   uniqueBoroughs.forEach(borough => {
     let bButton = document.createElement("button");
@@ -76,8 +78,16 @@
    document.getElementById("boroughFilters").addEventListener("click", e => {
       if (e.target.tagName === "BUTTON") {
         const borough = e.target.id;
-        const filtered = borough === "(null)" ? crimeData : crimeData.filter(c => c.borough === borough);
+        const filtered = borough === "ALL" ? crimeData : crimeData.filter(c => c.borough === borough);
         crimeChart = updateChartb(filtered, document.getElementById("myChart"), crimeChart);
+      }
+  });
+
+  document.getElementById("offenseFilters").addEventListener("click", e => {
+      if (e.target.tagName === "BUTTON") {
+        const crime = e.target.id;
+        const filtered = crime === "ALL" ? crimeData : crimeData.filter(c => c.offense === crime);
+        crimeChart = updateChartc(filtered, document.getElementById("myChart"), crimeChart);
       }
   });
   </script>
