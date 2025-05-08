@@ -57,7 +57,30 @@ export const getAllReports = async (filters = {}) => {
     if (filters.startDate) query.date.$gte = filters.startDate;
     if (filters.endDate) query.date.$lte = filters.endDate;
   }
-
+  
+  if (filters.status) {
+    query.status = filters.status;
+  }
 
   return await collection.find(query).toArray();
+};
+
+// Update the status of a report
+export const updateReportStatus = async (id, newStatus) => {
+  if (!ObjectId.isValid(id)) throw 'Invalid report ID';
+  if (!['pending', 'approved', 'rejected'].includes(newStatus)) throw 'Invalid status';
+
+  const db = await connectToDb();
+  const collection = db.collection('userReports');
+
+  const result = await collection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { status: newStatus } }
+  );
+
+  if (result.modifiedCount === 0) {
+    throw `Failed to update status for report ${id}`;
+  }
+
+  return true;
 };
