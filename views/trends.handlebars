@@ -1,34 +1,83 @@
 <h1>{{title}}</h1>
 <div>
+  <div id="boroughFilters">Sort by Borough: </div>
+  <div id="monthFilters">Sort by Month: </div>
+  <div id="offenseFilters"> Sort by Offense: 
+    <ul id="offenseSearch"></ul>
+  </div>
   <canvas id="myChart"></canvas>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/js/charts.js"></script>
 
 <script>
   const ctx = document.getElementById('myChart');
   const crimeData = {{{crimes}}};
-  let boroughArr = [];
-  for (let c of crimeData){
-    const checkBorough = boroughArr.findIndex((elem) => elem.borough === c.borough);
-    if (checkBorough === -1) boroughArr.push({borough: c.borough, count: 1});
-    else boroughArr[checkBorough].count += 1;
-  }
-  //console.log(crimeData.length);
+  
+  const uniqueBoroughs = [...new Set(crimeData.map(crime => crime.borough))];
+  const uniqueCrimes = [...new Set(crimeData.map(crime => crime.offense))];
+  const uniqueMonths = [...new Set(crimeData.map(crime => crime.date.substring(5,7)))];
+  uniqueMonths.sort();
+  uniqueBoroughs.sort();
+  uniqueCrimes.sort();
+  uniqueMonths.push("ALL");
+  uniqueBoroughs.push("ALL");
+  uniqueCrimes.push("ALL");
+  const bfilters = document.getElementById("boroughFilters");
+  uniqueBoroughs.forEach(borough => {
+    if (borough !== "(null)") {
+      let bButton = document.createElement("button");
+      bButton.textContent = borough;
+      bButton.id = borough;
+      bfilters.appendChild(bButton);
+    }
+  });
 
-  new Chart(ctx, {
-      type: 'bar',
-      data: {
-          datasets: [{
-              label: '# of crimes in borough',
-              data: boroughArr,
-          }]
-      },
-      options: {
-          parsing: {
-              xAxisKey: 'borough',
-              yAxisKey: 'count'
-          }
+  const cfilters = document.getElementById("offenseSearch");
+  uniqueCrimes.forEach(crime => {
+    let listItem = document.createElement("li");
+    let cButton = document.createElement("button");
+    cButton.textContent = crime;
+    cButton.id = crime;
+    listItem.appendChild(cButton);
+    cfilters.appendChild(listItem);
+  });
+
+  const tfilters = document.getElementById("monthFilters");
+  uniqueMonths.forEach(month => {
+    let tButton = document.createElement("button");
+    tButton.textContent = typeof monthRef[month] === "undefined" ? "ALL" : monthRef[month];
+    tButton.id = month;
+    tfilters.appendChild(tButton);
+  });
+
+
+
+  let crimeChart;
+  crimeChart = updateChartC(crimeData, ctx, crimeChart, "ALL");
+
+  document.getElementById("boroughFilters").addEventListener("click", e => {
+      if (e.target.tagName === "BUTTON") {
+        const borough = e.target.id;
+        const filtered = borough === "ALL" ? crimeData : crimeData.filter(c => c.borough === borough);
+        crimeChart = updateChartB(filtered, document.getElementById("myChart"), crimeChart, borough);
       }
   });
-</script>
+
+  document.getElementById("monthFilters").addEventListener("click", e => {
+      if (e.target.tagName === "BUTTON") {
+        const month = e.target.id;
+        const filtered = month === "ALL" ? crimeData : crimeData.filter(c => c.date.substring(5,7) === month);
+        crimeChart = updateChartT(filtered, document.getElementById("myChart"), crimeChart, month);
+      }
+  });
+
+  document.getElementById("offenseFilters").addEventListener("click", e => {
+      if (e.target.tagName === "BUTTON") {
+        const crime = e.target.id;
+        const filtered = crime === "ALL" ? crimeData : crimeData.filter(c => c.offense === crime);
+        crimeChart = updateChartC(filtered, document.getElementById("myChart"), crimeChart, crime);
+      }
+  });
+  </script>
