@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { createReport } from '../data/userReports.js';
 import { validateReportInput } from '../validations/reportValidation.js';
+import { connectToDb } from '../config/mongoConnection.js';
 
 const router = Router();
 
@@ -25,6 +26,11 @@ router.post('/', async (req, res) => {
 
     // Save to DB
     const newReport = await createReport(reportData);
+    const username = req.session.user.username;
+
+    const db = await connectToDb();
+    const users = await db.collection('users');
+    const user = await users.updateOne({ username }, { $push: { reports: newReport }});
 
     // show confirmation
     res.render('report', {
