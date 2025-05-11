@@ -1,6 +1,6 @@
 <ul id="users">
     {{#each users}}
-        <li>
+        <li id={{username}}>
             <h2>{{username}}</h2>
             <ul id="reports">
                 {{#each reports}}
@@ -24,6 +24,9 @@
 
             <form method="post" id="userBan">
                 <button type="submit">Remove User</button>
+            </form>
+            <form method="post" id="makeAdmin">
+                <button type="submit">Make {{username}} an Admin</button>
             </form>
         </li>
     {{/each}}
