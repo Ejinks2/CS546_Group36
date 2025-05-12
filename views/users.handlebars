@@ -2,19 +2,21 @@
     {{#each users}}
         <li id={{username}}>
             <h2>{{username}}</h2>
-            <ul id="reports">
+            <ul id="{{username}}-reports">
                 {{#each reports}}
-                    <h3>{{offense}}</h3>
-                    <h4>{{location}}, {{borough}}</h4>
-                    <h4>{{description}}</h4>
-                    <h4>{{date}}</h4>
-                    <form method="post" id="acceptReport">
-                        <button type="submit">Approve</button>
-                        <button type="submit">Deny</button>
-                    </form>
+                    <li id={{_id}}>
+                        <h3>{{offense}}</h3>
+                        <h4>{{location}}, {{borough}}</h4>
+                        <h4>{{description}}</h4>
+                        <h4>{{date}}</h4>
+                        <form method="post" class="acceptButton" id="{{username}}-acceptReport">
+                            <button type="submit" name="decision" value="approve">Approve</button>
+                            <button type="submit" name="decision" value="deny">Deny</button>
+                        </form>
+                    </li>
                 {{/each}}
             </ul>
-            <ul id="comments">
+            <ul id="{{username}}-comments">
                 {{#each comments}}
                     <h3>{{userId}}</h3>
                     <h4>{{content}}</h4>
@@ -22,10 +24,10 @@
                 {{/each}}
             </ul>
 
-            <form method="post" id="userBan">
+            <form method="post" id="{{username}}-userBan">
                 <button type="submit">Remove User</button>
             </form>
-            <form method="post" id="makeAdmin">
+            <form method="post" id="{{username}}-makeAdmin">
                 <button type="submit">Make {{username}} an Admin</button>
             </form>
         </li>
