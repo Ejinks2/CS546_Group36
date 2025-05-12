@@ -36,6 +36,7 @@ const setRoutes = (app) => {
     app.use('/admin', adminRoutes);
     app.use('/users', userRoutes);
     app.use('/search', searchRoutes); // for official crime data
+    app.use('/comment', commentRoutes);
 
     app.use('/reportfeed', userReportRoutes); // for feed of reports
     app.use('/report', reportRoutes); // user-submitted reports

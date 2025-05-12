@@ -1,3 +1,4 @@
+
 import express from 'express';
 import { addComment, getCommentsByCrimeId, deleteComment, getCommentById } from '../data/comments.js';
 import { getFlagCount } from '../data/flags.js';
