@@ -1,0 +1,42 @@
+
+<h2>User Reports</h2>
+{{#if user.reports}}
+    <ul id="{{user.username}}-reports">
+        {{#each user.reports}}
+            <li id={{_id}}>
+                <h3>{{offense}}</h3>
+                <h4>{{location}}, {{borough}}</h4>
+                <h4>{{description}}</h4>
+                <h4>{{date}}</h4>
+            </li>
+        {{/each}}
+    </ul>
+{{else}}
+    <h3>N/A - User has not reported anything yet.</h3>
+{{/if}}
+
+<h2>User Comments</h2>
+{{#if user.comments}}
+    <ul id="{{user.username}}-comments">
+        {{#each user.comments}}
+            <h3>{{userId}}</h3>
+            <h4>{{content}}</h4>
+            <h4>{{date}}</h4>
+        {{/each}}
+    </ul>
+{{else}}
+    <h3>N/A - User has made no comments.</h3>
+{{/if}}
+
+<form method="post" id="userBan">
+    <button type="submit" value="{{user.username}}" id="submitBan">Remove {{user.username}}</button>
+</form>
+
+{{#if user.admin}}
+{{else}}
+    <form method="post" id="makeAdmin">
+        <button type="submit" value="{{user.username}}" id="submitAdmin">Make {{user.username}} an Admin</button>
+    </form>
+{{/if}}
+
+<script src="/js/userHandler.js"></script>

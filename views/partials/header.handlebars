@@ -1,13 +1,12 @@
 <div class="header">
     <h1>{{title}}</h1>
-
     {{#if description}}
         <h2>{{description}}</h2>
     {{/if}}
     <nav>
         <a href="/">Home</a>
         {{#if user.admin}}
-            {{!-- <a href="/admin">Admin</a> --}}
+            <a href="/admin">Admin</a>
             <a href="/users">Users</a>
         {{/if}}
         <a href="/search">Search</a>
