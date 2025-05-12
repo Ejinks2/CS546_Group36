@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { connectToDb } from "../config/mongoConnection.js";
+import { ReturnDocument } from "mongodb";
 
 const userData = "http://localhost:3000/users/data";
 

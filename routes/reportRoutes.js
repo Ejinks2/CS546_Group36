@@ -22,11 +22,11 @@ router.post('/', async (req, res) => {
   //console.log(req.body)
   try {
     // Validate report
+    const username = req.session.user.username;
     const reportData = validateReportInput(req.body);
 
     // Save to DB
-    const newReport = await createReport(reportData);
-    const username = req.session.user.username;
+    const newReport = await createReport(reportData, username);
 
     const db = await connectToDb();
     const users = await db.collection('users');
