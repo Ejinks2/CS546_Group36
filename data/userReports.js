@@ -2,7 +2,7 @@ import { connectToDb } from '../config/mongoConnection.js';
 import { ObjectId } from 'mongodb';
 
 // Insert a new user-submitted report
-export const createReport = async (data) => {
+export const createReport = async (data, user) => {
   if (!data || typeof data !== 'object') {
     throw 'Invalid report data';
   }
@@ -19,6 +19,7 @@ export const createReport = async (data) => {
     description: data.description?.trim(),
     date: data.date,
     status: 'pending',
+    user,
     flags: [],
     createdAt: new Date()
   };
@@ -73,18 +74,26 @@ export const updateReportStatus = async (id, newStatus) => {
   const db = await connectToDb();
   const collection = db.collection('userReports');
 
-  const result = await collection.updateOne(
+  const result = await collection.findOneAndUpdate(
     { _id: new ObjectId(id) },
     { $set: { status: newStatus } }
   );
+
+  const collection2 = db.collection('users');
+  const updatedUser = await collection2.updateOne(
+    { username: result.user },
+    { $set : { "reports.$[elem].status": newStatus } },
+    { arrayFilters: [ { "elem._id": new ObjectId(id) } ]}
+  );
+
 
   if (result.modifiedCount === 0) {
     throw `Failed to update status for report ${id}`;
   }
 
-  const collection2 = db.collection('officialCrimes');
+  const collection3 = db.collection('officialCrimes');
   const user = await collection.findOne({ _id: new ObjectId(id) });
-  if (user.status === "approved") await collection2.insertOne({ 
+  if (user.status === "approved") await collection3.insertOne({ 
         offense: user.offense, 
         borough: user.borough.toUpperCase(), 
         location: user.location, 
