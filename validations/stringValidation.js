@@ -1,6 +1,6 @@
 export const checkString = (input, name) => {
   if (!input || typeof input !== 'string'){
-    throw `input for ${name} is null or not a string"`
+    throw `input for ${name} is null or not a string`
   }
   if (input.trim().length == 0){
     throw `${name} is spaces or empty`

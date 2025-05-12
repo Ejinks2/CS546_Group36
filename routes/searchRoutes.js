@@ -65,7 +65,8 @@ router.route("/")
     res.render('search', {
       title: "Search Crimes",
       crimes: filtered.slice(0, 50).map(c => ({
-        ...c.toObject(),
+        offense: c.offense,
+        borough: c.borough,
         date: c.date.slice(0, 10)
       })),
       search_input: search_query,

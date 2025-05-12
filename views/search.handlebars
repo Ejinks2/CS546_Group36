@@ -1,4 +1,7 @@
 <main class="search-crime-container">
+  {{#if error}}
+  <p>{{error}}</p>
+  {{/if}}
   <form action="/search" method="POST" class="search-form">
     <label id="search-crimes" for="searchCrime">Search for Crime</label>
     <input type="text" id="searchCrime" name="searchCrime" placeholder="Search for Crime by type...">
