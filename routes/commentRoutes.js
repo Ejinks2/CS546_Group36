@@ -1,40 +1,101 @@
-import { Router } from 'express';
-import validateComment from '../data/comments.js';
-import { connectToDb } from '../config/mongoConnection.js';
-const router = Router();
 
-router.route('/:id').get(async (req, res) => {
-    return res.render('feed', { title: "Comment" });
-})
-.post(async (req, res) => {
-    const body = req.body;
-    const post = req.params.id;
-    //validateComment(body);
+import express from 'express';
+import { addComment, getCommentsByCrimeId, deleteComment, getCommentById } from '../data/comments.js';
+import { getFlagCount } from '../data/flags.js';
+import { getUserById } from '../data/users.js';
 
-    const db = await connectToDb();
-    const users = db.collection('users');
-    const userReports = db.collection('userReports');
+const router = express.Router();
 
-    const date = new Date();
-    const newDate = `${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}/${String(date.getFullYear())}`;
-
-    const hours = date.getHours() % 12 || 12;
-    const time = `${hours}:${String(date.getMinutes()).padStart(2, '0')}${date.getHours() < 12 ? 'AM' : 'PM'}`
-    const datePosted = `${newDate} ${time}`;
+// Get comments for a crime
+router.get('/:crimeId', async (req, res) => {
+  try {
+    const { crimeId } = req.params;
+    const comments = await getCommentsByCrimeId(crimeId);
     
-    const comment = {
-        user: req.session.user,
-        body,
-        datePosted
-    };
+    // Get flag counts for each comment
+    const commentsWithDetails = await Promise.all(
+      comments.map(async (comment) => {
+        const flagCount = await getFlagCount(comment._id.toString(), 'comment');
+        return {
+          ...comment,
+          flagCount,
+          username: comment.username || 'Deleted User'
+        };
+      })
+    );
 
-    const userResult = await users.findOneAndUpdate({ username: req.session.user }, { $push: { comments: comment } });
-    if (!userResult) return res.redirect('/comment');
+    res.json(commentsWithDetails);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
-    const reportResult = await userReports.findOneAndUpdate({ _id: post }, { $push: { comments: comment } });
-    if (!reportResult) return res.redirect('/comment');
+// Add a comment
+router.post('/:crimeId', async (req, res) => {
+  try {
+    if (!req.session.user) {
+      return res.status(401).json({ error: 'You must be logged in to comment' });
+    }
 
-    return res.redirect('/reportfeed');
+    const { crimeId } = req.params;
+    const { content } = req.body;
+    const username = req.session.user.username;
+
+    if (!content || content.trim().length === 0) {
+      return res.status(400).json({ error: 'Comment content is required' });
+    }
+
+    const commentId = await addComment(crimeId, username, content.trim());
+    res.json({ success: true, commentId });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Create a new comment
+router.post('/', async (req, res) => {
+  try {
+    if (!req.session.user) {
+      return res.status(401).json({ error: 'You must be logged in to comment' });
+    }
+
+    const { crimeId, content } = req.body;
+    if (!crimeId || !content) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const username = req.session.user.username;
+    const commentId = await addComment(crimeId, username, content);
+    const comment = await getCommentById(commentId);
+
+    res.json({
+      ...comment,
+      username: comment.username || 'Deleted User'
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete a comment
+router.delete('/:commentId', async (req, res) => {
+  try {
+    if (!req.session.user) {
+      return res.status(401).json({ error: 'You must be logged in to delete comments' });
+    }
+
+    const { commentId } = req.params;
+    const username = req.session.user.username;
+
+    const result = await deleteComment(commentId, username);
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: 'Comment not found or unauthorized' });
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 export default router;

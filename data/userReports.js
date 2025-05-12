@@ -63,6 +63,9 @@ export const getAllReports = async (filters = {}) => {
   if (filters.status) {
     query.status = filters.status;
   }
+  if (filters.user) {
+    query.user = filters.user;
+  }
 
   return await collection.find(query).toArray();
 };

@@ -1,20 +1,340 @@
 <main>
   <section class="feed">
     {{#each userReport}}
-    <article class="userPost">
-      <header>
-        <h2>{{offense}}</h2>
-        <time datetime="{{dateISO}}">{{date}}</time>
-      </header>
-
-      <div class="secondary">
-        <span class="location">{{location}}</span>
-        <span class="borough">{{borough}}</span> ·
-        <span class="status status-{{status}}">{{status}}</span>
+    <div class="feed-report-card">
+      <div class="feed-report-header">
+        <div>
+          <h3>{{offense}}</h3>
+          <span class="feed-status-badge {{status}}">{{status}}</span>
+        </div>
+        <span class="feed-report-date">{{date}}</span>
       </div>
-
-      <p class="description">{{description}}</p>
-    </article>
+      <div class="feed-report-meta">
+        <span>{{location}}, {{borough}}</span>
+      </div>
+      <p class="feed-report-description">{{description}}</p>
+      <div class="feed-report-flags">
+        {{#if ../user}}
+          <button class="flag-btn" data-type="report" data-id="{{_id}}" data-flagged="{{hasFlagged}}" title="Flag this report">
+            🚩 <span class="flag-count" id="report-flag-count-{{_id}}">{{flagCount}}</span>
+            <span class="flag-label" id="flag-label-{{_id}}">{{#if hasFlagged}}Flagged{{else}}Flag{{/if}}</span>
+          </button>
+        {{else}}
+          <span class="flag-btn-disabled" title="Login to flag">🚩 <span class="flag-count">{{flagCount}}</span></span>
+        {{/if}}
+      </div>
+      <div class="comments-section">
+        <h3>Comments</h3>
+        <div class="comments-list" id="comments-{{_id}}">
+          <!-- Comments will be loaded here dynamically -->
+        </div>
+        {{#if ../user}}
+          <form class="comment-form" data-report-id="{{_id}}">
+            <textarea name="content" placeholder="Add a comment..." required></textarea>
+            <button type="submit">Post Comment</button>
+          </form>
+        {{else}}
+          <p>Please <a href="/login">login</a> to comment</p>
+        {{/if}}
+      </div>
+    </div>
     {{/each}}
   </section>
 </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Load comments for each report
+  document.querySelectorAll('.feed-report-card').forEach(post => {
+    const reportId = post.querySelector('.comment-form')?.dataset.reportId;
+    if (reportId) {
+      loadComments(reportId);
+    }
+  });
+
+  // Handle comment form submissions
+  document.querySelectorAll('.comment-form').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const reportId = form.dataset.reportId;
+      const content = form.querySelector('textarea').value;
+      
+      try {
+        const response = await fetch('/comments', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            crimeId: reportId,
+            content: content
+          })
+        });
+
+        if (response.ok) {
+          form.querySelector('textarea').value = '';
+          loadComments(reportId);
+        } else {
+          const error = await response.json();
+          alert(error.error || 'Failed to post comment');
+        }
+      } catch (error) {
+        alert('Error posting comment');
+      }
+    });
+  });
+
+  // Add flag button event listeners for reports
+  document.querySelectorAll('.flag-btn[data-type="report"]').forEach(btn => {
+    updateFlagBtnUI(btn);
+    btn.addEventListener('click', async function(e) {
+      e.preventDefault();
+      const reportId = this.dataset.id;
+      const flagged = this.dataset.flagged === 'true';
+      if (!flagged) {
+        const reason = prompt('Please provide a reason for flagging this report:');
+        if (!reason) return;
+        try {
+          const response = await fetch(`/flags/report/${reportId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reason })
+          });
+          const data = await response.json();
+          if (data.flagCount !== undefined) {
+            document.getElementById(`report-flag-count-${reportId}`).textContent = data.flagCount;
+          }
+          this.dataset.flagged = 'true';
+          document.getElementById(`flag-label-${reportId}`).textContent = 'Flagged';
+          alert(data.message || 'Flag submitted!');
+        } catch (err) {
+          alert('Error flagging report');
+        }
+      } else {
+        // Unflag
+        if (!confirm('Remove your flag from this report?')) return;
+        try {
+          const response = await fetch(`/flags/report/${reportId}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+          });
+          const data = await response.json();
+          if (data.flagCount !== undefined) {
+            document.getElementById(`report-flag-count-${reportId}`).textContent = data.flagCount;
+          }
+          this.dataset.flagged = 'false';
+          document.getElementById(`flag-label-${reportId}`).textContent = 'Flag';
+          alert(data.message || 'Flag removed!');
+        } catch (err) {
+          alert('Error removing flag');
+        }
+      }
+      updateFlagBtnUI(this);
+    });
+  });
+});
+
+function updateFlagBtnUI(btn) {
+  if (btn.dataset.flagged === 'true') {
+    btn.classList.add('flagged');
+  } else {
+    btn.classList.remove('flagged');
+  }
+}
+
+async function loadComments(reportId) {
+  try {
+    const response = await fetch(`/comments/${reportId}`);
+    const comments = await response.json();
+    const commentsContainer = document.querySelector(`#comments-${reportId}`);
+    if (comments.length === 0) {
+      commentsContainer.innerHTML = '<div class="no-comments">No comments yet.</div>';
+      return;
+    }
+    commentsContainer.innerHTML = comments.map(comment => `
+      <div class="comment-bubble">
+        <div class="comment-bubble-header">
+          <span class="comment-author">${comment.username}</span>
+          <span class="comment-date">${new Date(comment.createdAt).toLocaleString()}</span>
+        </div>
+        <div class="comment-bubble-content">${comment.content}</div>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('Error loading comments:', error);
+  }
+}
+</script>
+
+<style>
+.feed-report-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+  margin: 1.2rem 0;
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  border-left: 5px solid #2d5a88;
+}
+.feed-report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.feed-status-badge {
+  display: inline-block;
+  margin-left: 0.7em;
+  padding: 0.2em 0.7em;
+  border-radius: 12px;
+  font-size: 0.92em;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.feed-status-badge.pending {
+  background: #ffe082;
+  color: #7a5c00;
+}
+.feed-status-badge.approved {
+  background: #c8e6c9;
+  color: #256029;
+}
+.feed-report-date {
+  font-size: 0.95em;
+  color: #888;
+}
+.feed-report-meta {
+  font-size: 0.97em;
+  color: #555;
+}
+.feed-report-description {
+  font-size: 1.05em;
+  color: #222;
+  margin: 0.5em 0 0.2em 0;
+}
+.feed-report-flags {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.98em;
+  color: #d9534f;
+}
+.flag-btn {
+  background: none;
+  border: none;
+  color: #d9534f;
+  font-size: 1.1em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2em;
+  transition: color 0.2s;
+}
+.flag-btn:hover {
+  color: #b52a27;
+}
+.flag-count {
+  font-size: 0.95em;
+  margin-left: 0.2em;
+  font-weight: bold;
+}
+
+.comments-section {
+  margin-top: 1rem;
+  padding: 1rem 0.5rem 0.5rem 0.5rem;
+  border-top: 1px solid #eee;
+}
+
+.comment-form {
+  margin-top: 0.5rem;
+}
+
+.comment-form textarea {
+  width: 100%;
+  min-height: 40px;
+  margin-bottom: 0.25rem;
+  padding: 0.4rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+.comment-form button {
+  padding: 0.3rem 1.1rem;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: none;
+  background: #2d5a88;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.comment-form button:hover {
+  background: #1a3553;
+}
+
+.comments-list {
+  max-height: 220px;
+  overflow-y: auto;
+  margin-bottom: 0.5em;
+  padding-right: 0.2em;
+}
+.comment-bubble {
+  background: #f5f7fa;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(44,62,80,0.04);
+  margin: 0.5em 0;
+  padding: 0.7em 1em 0.5em 1em;
+  font-size: 0.97rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+.comment-bubble-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.2em;
+}
+.comment-author {
+  font-weight: 600;
+  color: #2d5a88;
+  font-size: 0.98em;
+}
+.comment-date {
+  font-size: 0.82em;
+  color: #888;
+}
+.comment-bubble-content {
+  color: #222;
+  font-size: 0.97em;
+  margin-left: 0.1rem;
+}
+.no-comments {
+  color: #bbb;
+  font-size: 0.97em;
+  text-align: center;
+  margin: 0.7em 0;
+}
+
+.flagged {
+  color: #d9534f !important;
+  background: #ffeaea !important;
+  border: 1.5px solid #d9534f;
+}
+.flag-label {
+  margin-left: 0.5em;
+  font-size: 0.97em;
+  font-weight: 600;
+}
+.flag-btn-disabled {
+  color: #bbb;
+  font-size: 1.1em;
+  cursor: not-allowed;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2em;
+}
+</style>

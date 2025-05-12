@@ -1,51 +1,137 @@
 <main>
-  <h4>Crime details:</h4>
-  <p>{{error}}</p>
-  <form method="POST" action="/report">
-    <label>
-      Offense:
-      <select id="offense" name="offense">
-        <option value="ROBBERY">ROBBERY</option>
-        <option value="BURGLARY">BURGLARY</option>
-        <option value="RAPE">RAPE</option>
-        <option value="DANGEROUS DRUGS">DANGEROUS DRUGS</option>
-        <option value="LARCENY">LARCENY</option>
-        <option value="FORGERY">FORGERY</option>
-        <option value="ASSAULT">ASSAULT</option>
-        <option value="GAMBLING">GAMBLING</option>
-        <option value="DANGEROUS WEAPONS">DANGEROUS WEAPONS</option>
-        <option value="KIDNAPPING">KIDNAPPING</option>
-        <option value="HARRASSMENT">HARRASSMENT</option>
-        <option value="POSSESSION OF STOLEN GOODS">POSSESSION OF STOLEN GOODS</option>
-      </select>
-    </label>
-    <br>
-    <label>
-      Borough:
-      <select id="borough" name="borough">
-        <option value="Manhattan">Manhattan</option>
-        <option value="Brooklyn">Brooklyn</option>
-        <option value="Queens">Queens</option>
-        <option value="The Bronx">The Bronx</option>
-        <option value="Staten Island">Staten Island</option>
-      </select>
-    </label>
-    <br>
-    <label>
-      Time of Incident:
-      <input type="datetime-local" id="date" name="date">
-    </label>
-    <br>
-    <label>
-      Location of Incident:
-      <input type="text" id="location" name="location">
-    </label>
-    <br>
-    <label>
-      Description of Incident:
-      <input type="text" id="description" name="description">
-    </label>
-    <br>
-    <input type="submit" id="submit-data" name="submit-data">
-  </form>
+  <div class="report-card">
+    <h2>Submit a Crime Report</h2>
+    {{#if error}}
+      <div class="report-error">{{error}}</div>
+    {{/if}}
+    {{#if success}}
+      <div class="report-success">Report submitted successfully!</div>
+    {{/if}}
+    <form method="POST" action="/report" class="report-form">
+      <div class="form-group">
+        <label for="offense">Offense</label>
+        <select id="offense" name="offense" required>
+          <option value="">Select offense</option>
+          <option value="ROBBERY">ROBBERY</option>
+          <option value="BURGLARY">BURGLARY</option>
+          <option value="RAPE">RAPE</option>
+          <option value="DANGEROUS DRUGS">DANGEROUS DRUGS</option>
+          <option value="LARCENY">LARCENY</option>
+          <option value="FORGERY">FORGERY</option>
+          <option value="ASSAULT">ASSAULT</option>
+          <option value="GAMBLING">GAMBLING</option>
+          <option value="DANGEROUS WEAPONS">DANGEROUS WEAPONS</option>
+          <option value="KIDNAPPING">KIDNAPPING</option>
+          <option value="HARRASSMENT">HARRASSMENT</option>
+          <option value="POSSESSION OF STOLEN GOODS">POSSESSION OF STOLEN GOODS</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="borough">Borough</label>
+        <select id="borough" name="borough" required>
+          <option value="">Select borough</option>
+          <option value="Manhattan">Manhattan</option>
+          <option value="Brooklyn">Brooklyn</option>
+          <option value="Queens">Queens</option>
+          <option value="The Bronx">The Bronx</option>
+          <option value="Staten Island">Staten Island</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="date">Time of Incident</label>
+        <input type="datetime-local" id="date" name="date" required>
+      </div>
+      <div class="form-group">
+        <label for="location">Location of Incident</label>
+        <input type="text" id="location" name="location" placeholder="e.g. 123 Main St" required>
+      </div>
+      <div class="form-group">
+        <label for="description">Description of Incident</label>
+        <textarea id="description" name="description" rows="3" placeholder="Describe what happened..." required></textarea>
+      </div>
+      <button type="submit" class="report-submit-btn">Submit Report</button>
+    </form>
+  </div>
 </main>
+
+<style>
+.report-card {
+  max-width: 480px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.09);
+  padding: 2.2rem 2rem 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.report-card h2 {
+  margin-bottom: 0.5rem;
+  color: #2d5a88;
+  font-size: 1.5rem;
+  text-align: center;
+}
+.report-error {
+  background: #ffcdd2;
+  color: #b71c1c;
+  border-radius: 6px;
+  padding: 0.7em 1em;
+  margin-bottom: 1em;
+  text-align: center;
+}
+.report-success {
+  background: #c8e6c9;
+  color: #256029;
+  border-radius: 6px;
+  padding: 0.7em 1em;
+  margin-bottom: 1em;
+  text-align: center;
+}
+.report-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.form-group label {
+  font-weight: 600;
+  color: #2d5a88;
+  margin-bottom: 0.1em;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.6em 0.9em;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fafbfc;
+  transition: border 0.2s;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border: 1.5px solid #2d5a88;
+  outline: none;
+}
+.report-submit-btn {
+  background: #2d5a88;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7em 1.5em;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5em;
+  transition: background 0.2s;
+}
+.report-submit-btn:hover {
+  background: #1a3553;
+}
+</style>

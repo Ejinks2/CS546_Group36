@@ -17,3 +17,10 @@ export const connectToDb = async () => {
   }
   return _db;
 };
+
+export const getDb = async () => {
+  if (!_db) {
+    await connectToDb();
+  }
+  return _db;
+};

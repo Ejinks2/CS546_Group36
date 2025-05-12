@@ -1,44 +1,158 @@
-
-<h2>User Reports</h2>
-{{#if user.reports}}
-    <ul id="{{user.username}}-reports">
-        {{#each user.reports}}
-            <li id={{_id}}>
-                <h3>{{offense}}</h3>
-                <h4>{{location}}, {{borough}}</h4>
-                <h4>{{description}}</h4>
-                <h4>{{date}}</h4>
+<main>
+  <div class="user-profile-card">
+    <h2 class="user-profile-header">User: {{user.username}}</h2>
+    <div class="user-profile-actions">
+      <form method="post" id="userBan">
+        <button type="submit" value="{{user.username}}" id="submitBan" class="ban-btn">Remove {{user.username}}</button>
+      </form>
+      {{#unless user.admin}}
+      <form method="post" id="makeAdmin">
+        <button type="submit" value="{{user.username}}" id="submitAdmin" class="admin-btn">Make {{user.username}} an Admin</button>
+      </form>
+      {{/unless}}
+    </div>
+    <div class="user-profile-section">
+      <h3>Reports</h3>
+      {{#if user.reports.length}}
+        <ul class="user-profile-reports-list">
+          {{#each user.reports}}
+            <li>
+              <span class="report-offense">{{offense}}</span>
+              <span class="report-meta">{{location}}, {{borough}}</span>
+              <span class="report-date">{{date}}</span>
+              <span class="report-desc">{{description}}</span>
             </li>
-        {{/each}}
-    </ul>
-{{else}}
-    <h3>N/A - User has not reported anything yet.</h3>
-{{/if}}
+          {{/each}}
+        </ul>
+      {{else}}
+        <div class="user-profile-empty">No reports</div>
+      {{/if}}
+    </div>
+    <div class="user-profile-section">
+      <h3>Comments</h3>
+      {{#if user.comments.length}}
+        <ul class="user-profile-comments-list">
+          {{#each user.comments}}
+            <li>
+              <span class="comment-content">{{content}}</span>
+              <span class="comment-date">{{date}}</span>
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <div class="user-profile-empty">No comments</div>
+      {{/if}}
+    </div>
+    <a href="/users" class="back-users-link">Back to Users</a>
+  </div>
+</main>
 
-<h2>User Comments</h2>
-{{#if user.comments}}
-    <ul id="{{user.username}}-comments">
-        {{#each user.comments}}
-            <h3>{{user}}</h3>
-            <h4>{{body}}</h4>
-            <h4>{{datePosted}}</h4>
-        {{/each}}
-    </ul>
-{{else}}
-    <h3>N/A - User has made no comments.</h3>
-{{/if}}
-
-<form method="post" id="userBan">
-    <button type="submit" value="{{user.username}}" id="submitBan">Remove {{user.username}}</button>
-</form>
-
-{{#if user.admin}}
-{{else}}
-    <form method="post" id="makeAdmin">
-        <button type="submit" value="{{user.username}}" id="submitAdmin">Make {{user.username}} an Admin</button>
-    </form>
-{{/if}}
-
-<a href="/users">Back to Users</a>
-
+<style>
+.user-profile-card {
+  max-width: 480px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.09);
+  padding: 2.2rem 2rem 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.user-profile-header {
+  color: #2d5a88;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+.user-profile-actions {
+  display: flex;
+  gap: 1.2em;
+  justify-content: center;
+  margin-bottom: 1.2em;
+}
+.ban-btn, .admin-btn {
+  background: #b71c1c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4em 1.2em;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.admin-btn {
+  background: #2d5a88;
+}
+.ban-btn:hover {
+  background: #7a5c00;
+}
+.admin-btn:hover {
+  background: #1a3553;
+}
+.user-profile-section h3 {
+  margin: 0.2em 0 0.5em 0;
+  color: #256029;
+  font-size: 1.08em;
+}
+.user-profile-reports-list, .user-profile-comments-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+.user-profile-reports-list li, .user-profile-comments-list li {
+  background: #fafbfc;
+  border-radius: 6px;
+  padding: 0.6em 0.9em;
+  font-size: 0.98em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+.report-offense {
+  font-weight: 600;
+  color: #b71c1c;
+}
+.report-meta {
+  color: #2d5a88;
+  font-size: 0.97em;
+}
+.report-date {
+  color: #888;
+  font-size: 0.92em;
+}
+.report-desc {
+  color: #333;
+  font-size: 0.97em;
+}
+.comment-content {
+  color: #222;
+  font-size: 0.98em;
+}
+.comment-date {
+  color: #888;
+  font-size: 0.92em;
+}
+.user-profile-empty {
+  color: #bbb;
+  font-size: 0.97em;
+  padding: 0.3em 0;
+  text-align: center;
+}
+.back-users-link {
+  display: block;
+  text-align: center;
+  margin: 2rem auto 0 auto;
+  color: #2d5a88;
+  font-weight: 600;
+  text-decoration: underline;
+}
+.back-users-link:hover {
+  color: #1a3553;
+}
+</style>
 <script src="/js/userHandler.js"></script>
