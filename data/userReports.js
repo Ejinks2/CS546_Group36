@@ -20,6 +20,7 @@ export const createReport = async (data, user) => {
     date: data.date,
     status: 'pending',
     user,
+    comments: [],
     flags: [],
     createdAt: new Date()
   };

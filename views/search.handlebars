@@ -13,6 +13,12 @@
       <strong>Borough:</strong> {{borough}}<br>
       <strong>Offense:</strong> {{offense}}<br> 
       <strong>Date:</strong> {{date}}
+      <form method="post" action=`/comments/${_id}` id="commentBody">
+        <label for="comment">
+          <textarea id="comment" name="comment" type="text" placeholder="Comments"></textarea>
+        </label> 
+        <button type="submit">Submit</button>
+      </form>
     </li>
     {{/each}}
   </ul>

@@ -31,10 +31,9 @@ if (banUser) {
             const banButton = document.getElementById('submitBan');
             const username = banButton.value;
 
-            console.log("hello there!");
-            await fetch(`/users/${username}`, { method: "DELETE" }).then(response => {
-                window.location.href = response.goTo;
-            });
+            const response = await fetch(`/users/${username}`, { method: "DELETE" })
+            const data = response.json();
+            window.location.href = data.goTo;
         } catch (e) {
             return;
         }

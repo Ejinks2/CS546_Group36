@@ -19,9 +19,9 @@
 {{#if user.comments}}
     <ul id="{{user.username}}-comments">
         {{#each user.comments}}
-            <h3>{{userId}}</h3>
-            <h4>{{content}}</h4>
-            <h4>{{date}}</h4>
+            <h3>{{user}}</h3>
+            <h4>{{body}}</h4>
+            <h4>{{datePosted}}</h4>
         {{/each}}
     </ul>
 {{else}}
