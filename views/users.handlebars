@@ -1,27 +1,159 @@
-<ul id="users">
+<main>
+  <h2 class="users-header">All Users</h2>
+  <div class="users-list">
     {{#each users}}
-        <li id={{username}}>
-            <h2>{{username}}</h2>
-            <ul id="{{username}}-reports">
-                {{#each reports}}
-                    <li id={{_id}}>
-                        <h3>{{offense}}</h3>
-                        <h4>{{location}}, {{borough}}</h4>
-                        <h4>{{description}}</h4>
-                        <h4>{{date}}</h4>
-                    </li>
-                {{/each}}
+      <div class="user-card">
+        <div class="user-card-header">
+          <h3>{{username}}</h3>
+          <a href="/users/{{username}}" class="user-page-btn">View User Page</a>
+        </div>
+        <div class="user-section">
+          <h4>Reports</h4>
+          {{#if reports.length}}
+            <ul class="user-reports-list">
+              {{#each reports}}
+                <li>
+                  <span class="report-offense">{{offense}}</span>
+                  <span class="report-meta">{{location}}, {{borough}}</span>
+                  <span class="report-date">{{date}}</span>
+                  <span class="report-desc">{{description}}</span>
+                </li>
+              {{/each}}
             </ul>
-            <ul id="{{username}}-comments">
-                {{#each comments}}
-                    <h3>{{userId}}</h3>
-                    <h4>{{content}}</h4>
-                    <h4>{{date}}</h4>
-                {{/each}}
+          {{else}}
+            <div class="user-empty">No reports</div>
+          {{/if}}
+        </div>
+        <div class="user-section">
+          <h4>Comments</h4>
+          {{#if comments.length}}
+            <ul class="user-comments-list">
+              {{#each comments}}
+                <li>
+                  <span class="comment-content">{{content}}</span>
+                  <span class="comment-date">{{date}}</span>
+                </li>
+              {{/each}}
             </ul>
-
-            <a href="/users/{{username}}">User Page</a>
-        </li>
+          {{else}}
+            <div class="user-empty">No comments</div>
+          {{/if}}
+        </div>
+      </div>
     {{/each}}
-</ul>
-<a href="/admin/reports">Approval Page</a>
+  </div>
+  <a href="/admin/reports" class="approval-link">Approval Page</a>
+</main>
+
+<style>
+.users-header {
+  text-align: center;
+  color: #2d5a88;
+  margin: 2rem 0 1.5rem 0;
+  font-size: 2rem;
+}
+.users-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+.user-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.09);
+  padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+  min-width: 320px;
+  max-width: 370px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.user-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.user-card-header h3 {
+  color: #2d5a88;
+  font-size: 1.3rem;
+  margin: 0;
+}
+.user-page-btn {
+  background: #2d5a88;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4em 1.1em;
+  font-size: 1em;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.user-page-btn:hover {
+  background: #1a3553;
+}
+.user-section h4 {
+  margin: 0.2em 0 0.5em 0;
+  color: #256029;
+  font-size: 1.08em;
+}
+.user-reports-list, .user-comments-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+.user-reports-list li, .user-comments-list li {
+  background: #fafbfc;
+  border-radius: 6px;
+  padding: 0.6em 0.9em;
+  font-size: 0.98em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+.report-offense {
+  font-weight: 600;
+  color: #b71c1c;
+}
+.report-meta {
+  color: #2d5a88;
+  font-size: 0.97em;
+}
+.report-date {
+  color: #888;
+  font-size: 0.92em;
+}
+.report-desc {
+  color: #333;
+  font-size: 0.97em;
+}
+.comment-content {
+  color: #222;
+  font-size: 0.98em;
+}
+.comment-date {
+  color: #888;
+  font-size: 0.92em;
+}
+.user-empty {
+  color: #bbb;
+  font-size: 0.97em;
+  padding: 0.3em 0;
+}
+.approval-link {
+  display: block;
+  text-align: center;
+  margin: 2.5rem auto 1rem auto;
+  color: #2d5a88;
+  font-weight: 600;
+  text-decoration: underline;
+}
+.approval-link:hover {
+  color: #1a3553;
+}
+</style>

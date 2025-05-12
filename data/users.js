@@ -1,5 +1,6 @@
 import { connectToDb } from "../config/mongoConnection.js";
 import bcrypt from "bcryptjs";
+import { ObjectId } from 'mongodb';
 
 export const login = async (username, password) => {
     const db = await connectToDb();
@@ -78,3 +79,25 @@ export const register = async (username, password, email) => {
     let newUser = await users.insertOne(user);
     if(!newUser.acknowledged) throw "Unable to add user.";
 }
+
+export const getUserById = async (userId) => {
+    const db = await connectToDb();
+    const users = db.collection('users');
+    
+    if (!userId) throw "Invalid user ID";
+    
+    try {
+        const user = await users.findOne({ _id: new ObjectId(userId) });
+        if (!user) return null;
+        
+        // Don't return sensitive information
+        return {
+            _id: user._id,
+            username: user.username,
+            admin: user.admin,
+            dateCreated: user.dateCreated
+        };
+    } catch (error) {
+        throw "Invalid user ID format";
+    }
+};

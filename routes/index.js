@@ -5,6 +5,8 @@ import userRoutes from './userRoutes.js';
 import loginRoutes from './loginRoutes.js';
 import registration from './registerRoutes.js';
 import userReportRoutes from './userReportRoutes.js';
+import commentRoutes from './commentRoutes.js';
+import flagRoutes from './flagRoutes.js';
 
 import { Router } from "express";
 const router = Router();
@@ -39,6 +41,8 @@ const setRoutes = (app) => {
     app.use('/report', reportRoutes); // user-submitted reports
     app.use('/login', loginRoutes); //for admin login
     app.use('/register', registration);
+    app.use('/comments', commentRoutes); // for comment functionality
+    app.use('/flags', flagRoutes); // for flagging system
     
 
     app.use(/(.*)/, (req, res) => {

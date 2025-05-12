@@ -15,7 +15,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // View engine
-app.engine('handlebars', exphbs.engine({ defaultLayout: 'main', partialsDir: ['views/partials/'] }));
+app.engine('handlebars', exphbs.engine({ 
+  defaultLayout: 'main', 
+  partialsDir: ['views/partials/'],
+  helpers: {
+    formatDate: function(date) {
+      return new Date(date).toLocaleString();
+    }
+  }
+}));
 app.set('view engine', 'handlebars');
 
 app.use(cookieParser());
