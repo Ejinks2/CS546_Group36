@@ -1,0 +1,18 @@
+<h2>{{crime.offense}}</h2>
+<h3>{{crime.description}}</h3>
+<h3>{{crime.location}}, {{crime.borough}}, {{crime.city}}</h3>
+
+{{#each user.comments}}
+    <h3>{{user}}</h3>
+    <h4>{{body}}</h4>
+    <h4>{{datePosted}}</h4>
+{{/each}}
+
+<form method="post" id="commentBody">
+    <label for="comment">
+        <input id="comment" name="comment" type="text">
+    </label> 
+    <button type="submit">Submit</button>
+</form>
+
+<script src="/js/handleComment.js"></script>
