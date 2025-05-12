@@ -59,7 +59,7 @@ router.route("/")
   try {
     const crimeList = await getOfficialCrimes(); // full list to filter from
     const filtered = crimeList.filter(c =>
-      c.offense?.toLowerCase().includes(search_query.toLowerCase())
+      c.offense?.toLowerCase().includes(search_query.toLowerCase()) || c.borough?.toLowerCase().includes(search_query.toLowerCase())
     );
 
     res.render('search', {
