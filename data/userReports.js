@@ -82,5 +82,13 @@ export const updateReportStatus = async (id, newStatus) => {
     throw `Failed to update status for report ${id}`;
   }
 
+  const collection2 = db.collection('officialCrimes');
+  const user = await collection.findOne({ _id: new ObjectId(id) });
+  if (user.status === "approved") await collection2.insertOne({ 
+        offense: user.offense, 
+        borough: user.borough.toUpperCase(), 
+        location: user.location, 
+        date: user.date });
+
   return true;
 };

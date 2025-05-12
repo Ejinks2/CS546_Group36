@@ -87,24 +87,3 @@ if (registrationForm) {
         }
     })
 }
-
-// let reportApproval = document.querySelectorAll('acceptButton');
-
-// if (reportApproval) {
-//     reportApproval.forEach(form => {
-//         form.addEventListener('submit', () => {
-//             form.forEach(button => {
-//                 button.addEventListener('click', (event) => {
-//                     event.preventDefault();
-//                     if (button.dataset.value = 'approve') {
-//                         console.log("Approved!");
-//                     } else if (button.dataset.value = 'deny') {
-//                         console.log("Denied.");
-//                     }
-//                 })
-//             })        
-//       })
-//     })
-// }
-
-let makeAdmin = document.querySelectorAll('makeAdmin')

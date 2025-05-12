@@ -31,7 +31,7 @@ router.route('').get(async (req, res) => {
 const setRoutes = (app) => {
     app.use('/', router);
 
-    //app.use('/admin', adminRoutes);
+    app.use('/admin', adminRoutes);
     app.use('/users', userRoutes);
     app.use('/search', searchRoutes); // for official crime data
 

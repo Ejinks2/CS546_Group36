@@ -9,10 +9,6 @@
                         <h4>{{location}}, {{borough}}</h4>
                         <h4>{{description}}</h4>
                         <h4>{{date}}</h4>
-                        <form method="post" class="acceptButton" id="{{username}}-acceptReport">
-                            <button type="submit" name="decision" value="approve">Approve</button>
-                            <button type="submit" name="decision" value="deny">Deny</button>
-                        </form>
                     </li>
                 {{/each}}
             </ul>
@@ -24,12 +20,8 @@
                 {{/each}}
             </ul>
 
-            <form method="post" id="{{username}}-userBan">
-                <button type="submit">Remove User</button>
-            </form>
-            <form method="post" id="{{username}}-makeAdmin">
-                <button type="submit">Make {{username}} an Admin</button>
-            </form>
+            <a href="/users/{{username}}">User Page</a>
         </li>
     {{/each}}
 </ul>
+<a href="/admin/reports">Approval Page</a>
