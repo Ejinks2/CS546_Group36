@@ -26,15 +26,20 @@ router.route("/")
       crimeList = await getOfficialCrimes(filters); // official data
     }
 
-    const limitedCrimes = crimeList.slice(0, 50);
+    const limitedCrimes = crimeList.slice(0, 50).map(c => ({
+      offense: c.offense,
+      borough: c.borough,
+      date: c.date.slice(0, 10)
+    }))
 
     res.render("search", {
       title: "Search Official Crime Records",
       links: { Home: '/', Admin: '/admin', Search: '/search', Report: '/report' },
       crimes: limitedCrimes,
+      newcss: "crimes"
     });
   } catch (e) {
-    res.status(500).render("search", { error: "Error loading crime data" });
+    res.status(500).render("search", { error: "Error loading crime data", newcss: "crimes"});
   }
 })
 
@@ -46,7 +51,8 @@ router.route("/")
   } catch (e) {
     return res.status(400).render('search', {
       title: "Search Crimes",
-      error: e
+      error: e,
+      newcss: "crimes"
     });
   }
 
@@ -58,14 +64,19 @@ router.route("/")
 
     res.render('search', {
       title: "Search Crimes",
-      crimes: filtered.slice(0, 50),
+      crimes: filtered.slice(0, 50).map(c => ({
+        ...c.toObject(),
+        date: c.date.slice(0, 10)
+      })),
       search_input: search_query,
-      links: { Home: '/', Admin: '/admin', Search: '/search', Report: '/report' }
+      links: { Home: '/', Admin: '/admin', Search: '/search', Report: '/report'},
+      newcss: "crimes"
     });
   } catch (e) {
     res.status(400).render('search', {
       title: "Search Crimes",
-      error: e
+      error: e,
+      newcss: "crimes"
     });
   }
 });
@@ -83,7 +94,8 @@ router.route("/trends")
     });
   } catch (e) {
     res.status(500).render("search", {
-      error: "Error displaying trends"
+      error: "Error displaying trends",
+      newcss: "crimes"
     });
   }
 });

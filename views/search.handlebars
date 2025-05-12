@@ -1,13 +1,16 @@
-
-<main>
-  <form action="/search" method="POST">
-    <label id="search-crimes"></label>
-    <input type="text" id="searchCrime" name="searchCrime" placeholder="Search for Crime...">
-    <input type="submit">
+<main class="search-crime-container">
+  <form action="/search" method="POST" class="search-form">
+    <label id="search-crimes" for="searchCrime">Search for Crime</label>
+    <input type="text" id="searchCrime" name="searchCrime" placeholder="Search for Crime by type...">
+    <button type="submit">Search</button>
   </form>
-  <ul>
+  <ul class="crime-list">
     {{#each crimes}}
-    <li>Borough: {{borough}}, Offense: {{offense}}, Date: {{date}}</li>
+    <li class="individual-crime">
+      <strong>Borough:</strong> {{borough}}<br>
+      <strong>Offense:</strong> {{offense}}<br> 
+      <strong>Date:</strong> {{date}}
+    </li>
     {{/each}}
   </ul>
 </main>
