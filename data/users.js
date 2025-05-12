@@ -10,6 +10,8 @@ export const login = async (username, password) => {
     username = username.trim();
     password = password.trim();
 
+    username = username.toLowerCase();
+
     if (!username || !password) throw "Invalid username or password.";
 
     const uname = /^[a-zA-Z0-9]+$/;

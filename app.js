@@ -29,15 +29,15 @@ app.use(
   })
 );
 
-app.use('/admin', (req, res, next) => {
-  if (!req.session.user) {
-    return res.redirect('/login');
-  } else if (!req.session.user.admin) {
-    return res.redirect('/users');
-  }
+// app.use('/admin', (req, res, next) => {
+//   if (!req.session.user) {
+//     return res.redirect('/login');
+//   } else if (!req.session.user.admin) {
+//     return res.redirect('/users');
+//   }
 
-  next();
-});
+//   next();
+// });
 
 app.use('/login', (req, res, next) => {
   if (req.session.user) {
