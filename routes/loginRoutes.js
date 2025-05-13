@@ -5,7 +5,7 @@ import { login } from "../data/users.js";
 router
     .route('')
         .get(async (req, res) => {
-            let error = "";
+            let error = false;
             if (req.query.error === "1") error = true;
             res.render('login', {
                 error, title: "Login"
