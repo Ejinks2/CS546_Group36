@@ -13,13 +13,294 @@
       <strong>Borough:</strong> {{borough}}<br>
       <strong>Offense:</strong> {{offense}}<br> 
       <strong>Date:</strong> {{date}}
-      <form method="post" action=`/comments/${_id}` id="commentBody">
-        <label for="comment">
-          <textarea id="comment" name="comment" type="text" placeholder="Comments"></textarea>
-        </label> 
-        <button type="submit">Submit</button>
-      </form>
+      {{#if ../user}}
+        <div class="comments-section" id="comments-{{_id}}">
+          <div class="comments-header">
+            <h4>Comments</h4>
+            <button class="toggle-comments" onclick="toggleComments('{{_id}}')">
+              <i class="fas fa-chevron-down"></i>
+            </button>
+          </div>
+          <div class="comments-content" id="comments-content-{{_id}}" style="display: none;">
+            <!-- Comments will be loaded here -->
+          </div>
+        </div>
+        <form class="comment-form" data-crime-id="{{_id}}">
+          <label for="comment">
+            <textarea id="comment" name="content" placeholder="Add a comment..." required></textarea>
+          </label> 
+          <button type="submit">Submit</button>
+        </form>
+      {{else}}
+        <div class="login-prompt">
+          <a href="/login">Login</a> to comment on this crime report
+        </div>
+      {{/if}}
     </li>
     {{/each}}
   </ul>
 </main>
+
+<script>
+  // Function to toggle comments visibility
+  function toggleComments(crimeId) {
+    const content = document.getElementById(`comments-content-${crimeId}`);
+    const button = document.querySelector(`#comments-${crimeId} .toggle-comments i`);
+    
+    if (content.style.display === 'none') {
+      content.style.display = 'block';
+      button.classList.remove('fa-chevron-down');
+      button.classList.add('fa-chevron-up');
+    } else {
+      content.style.display = 'none';
+      button.classList.remove('fa-chevron-up');
+      button.classList.add('fa-chevron-down');
+    }
+  }
+
+  // Load comments for each crime
+  document.querySelectorAll('.individual-crime').forEach(crime => {
+    const commentForm = crime.querySelector('.comment-form');
+    if (commentForm) {
+      const crimeId = commentForm.dataset.crimeId;
+      loadComments(crimeId);
+    }
+  });
+
+  // Function to load comments
+  async function loadComments(crimeId) {
+    try {
+      const response = await fetch(`/comments/${crimeId}`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const comments = await response.json();
+      const commentsContainer = document.querySelector(`#comments-content-${crimeId}`);
+      
+      if (!comments || comments.length === 0) {
+        commentsContainer.innerHTML = '<div class="no-comments">No comments yet.</div>';
+        return;
+      }
+
+      commentsContainer.innerHTML = comments.map(comment => `
+        <div class="comment">
+          <div class="comment-header">
+            <span class="comment-author">${comment.username}</span>
+            <span class="comment-date">${new Date(comment.createdAt).toLocaleDateString()}</span>
+          </div>
+          <div class="comment-content">${comment.content}</div>
+        </div>
+      `).join('');
+    } catch (error) {
+      console.error('Error loading comments:', error);
+      const commentsContainer = document.querySelector(`#comments-content-${crimeId}`);
+      commentsContainer.innerHTML = '<div class="error-message">Error loading comments. Please try again later.</div>';
+    }
+  }
+
+  // Handle comment form submissions
+  document.querySelectorAll('.comment-form').forEach(form => {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const crimeId = this.dataset.crimeId;
+      const content = this.querySelector('textarea[name="content"]').value.trim();
+      
+      if (!content) return;
+
+      try {
+        const response = await fetch(`/comments/${crimeId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 
+            content,
+            crimeId
+          })
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.error || 'Failed to post comment');
+        }
+
+        // Clear the form
+        this.reset();
+        // Reload comments
+        await loadComments(crimeId);
+      } catch (error) {
+        console.error('Error posting comment:', error);
+        alert(error.message || 'Failed to post comment');
+      }
+    });
+  });
+</script>
+
+<style>
+  .search-crime-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .search-form {
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .search-form input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  .search-form button {
+    padding: 0.5rem 1rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .search-form button:hover {
+    background-color: #2980b9;
+  }
+
+  .crime-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .individual-crime {
+    background: white;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  .comments-section {
+    margin: 10px 0;
+    background: #f8f9fa;
+    border-radius: 4px;
+  }
+
+  .comments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #e9ecef;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+  }
+
+  .comments-header h4 {
+    margin: 0;
+    color: #2c3e50;
+  }
+
+  .toggle-comments {
+    background: none;
+    border: none;
+    color: #2c3e50;
+    cursor: pointer;
+    padding: 5px;
+  }
+
+  .comments-content {
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .comment {
+    margin-bottom: 8px;
+    padding: 8px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+
+  .comment:last-child {
+    margin-bottom: 0;
+  }
+
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+  }
+
+  .comment-author {
+    font-weight: bold;
+    color: #2c3e50;
+  }
+
+  .comment-date {
+    color: #7f8c8d;
+  }
+
+  .comment-content {
+    color: #34495e;
+  }
+
+  .no-comments {
+    color: #7f8c8d;
+    font-style: italic;
+  }
+
+  .comment-form {
+    margin-top: 10px;
+  }
+
+  .comment-form textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+  }
+
+  .comment-form button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .comment-form button:hover {
+    background-color: #2980b9;
+  }
+
+  .login-prompt {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    text-align: center;
+    color: #7f8c8d;
+  }
+
+  .login-prompt a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .login-prompt a:hover {
+    text-decoration: underline;
+  }
+</style>

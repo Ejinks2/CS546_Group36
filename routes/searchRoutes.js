@@ -27,6 +27,7 @@ router.route("/")
     }
 
     const limitedCrimes = crimeList.slice(0, 50).map(c => ({
+      _id: c._id.toString(),
       offense: c.offense,
       borough: c.borough,
       date: c.date.slice(0, 10)
@@ -36,6 +37,7 @@ router.route("/")
       title: "Search Official Crime Records",
       links: { Home: '/', Admin: '/admin', Search: '/search', Report: '/report' },
       crimes: limitedCrimes,
+      user: req.session.user,
       newcss: "crimes"
     });
   } catch (e) {
@@ -65,11 +67,13 @@ router.route("/")
     res.render('search', {
       title: "Search Crimes",
       crimes: filtered.slice(0, 50).map(c => ({
+        _id: c._id.toString(),
         offense: c.offense,
         borough: c.borough,
         date: c.date.slice(0, 10)
       })),
       search_input: search_query,
+      user: req.session.user,
       links: { Home: '/', Admin: '/admin', Search: '/search', Report: '/report'},
       newcss: "crimes"
     });

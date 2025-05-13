@@ -16,18 +16,22 @@ router.route('').get(async (req, res) => {
         if (req.session.user.admin) {
             return res.render('home', {
                 title: 'Homepage',
-                description: "Know what's going on near you!"
+                description: "Know what's going on near you!",
+                newcss: 'home'
             });
         } else {
             return res.render('home', {
                 title: 'Homepage',
-                description: "Know what's going on near you!"
+                description: "Know what's going on near you!",
+                newcss: 'home'
             });
         }
     }
     return res.render('home', { 
-        title: 'Homepage' , 
-        description: "Know what's going on around you!"})
+        title: 'Homepage', 
+        description: "Know what's going on around you!",
+        newcss: 'home'
+    });
 });
 
 const setRoutes = (app) => {

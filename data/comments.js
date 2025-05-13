@@ -1,4 +1,3 @@
-
 import { getDb } from '../config/mongoConnection.js';
 import { ObjectId } from 'mongodb';
 
@@ -24,6 +23,17 @@ export const getCommentsByCrimeId = async (crimeId) => {
   return await db.collection(collectionName)
     .find({ 
       crimeId: new ObjectId(crimeId),
+      isDeleted: false 
+    })
+    .sort({ createdAt: -1 })
+    .toArray();
+};
+
+export const getCommentsByUsername = async (username) => {
+  const db = await getDb();
+  return await db.collection(collectionName)
+    .find({ 
+      username,
       isDeleted: false 
     })
     .sort({ createdAt: -1 })

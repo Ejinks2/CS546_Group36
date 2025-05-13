@@ -8,42 +8,86 @@
           <a href="/users/{{username}}" class="user-page-btn">View User Page</a>
         </div>
         <div class="user-section">
-          <h4>Reports</h4>
-          {{#if reports.length}}
-            <ul class="user-reports-list">
-              {{#each reports}}
-                <li>
-                  <span class="report-offense">{{offense}}</span>
-                  <span class="report-meta">{{location}}, {{borough}}</span>
-                  <span class="report-date">{{date}}</span>
-                  <span class="report-desc">{{description}}</span>
-                </li>
-              {{/each}}
-            </ul>
-          {{else}}
-            <div class="user-empty">No reports</div>
-          {{/if}}
+          <div class="reports-header">
+            <h4>Reports</h4>
+            <button class="toggle-reports" onclick="toggleReports('{{username}}')">
+              <i class="fas fa-chevron-down"></i>
+            </button>
+          </div>
+          <div class="reports-content" id="reports-content-{{username}}" style="display: none;">
+            {{#if reports.length}}
+              <ul class="user-reports-list">
+                {{#each reports}}
+                  <li>
+                    <span class="report-offense">{{offense}}</span>
+                    <span class="report-meta">{{location}}, {{borough}}</span>
+                    <span class="report-date">{{date}}</span>
+                    <span class="report-desc">{{description}}</span>
+                  </li>
+                {{/each}}
+              </ul>
+            {{else}}
+              <div class="user-empty">No reports</div>
+            {{/if}}
+          </div>
         </div>
-        <div class="user-section">
-          <h4>Comments</h4>
-          {{#if comments.length}}
-            <ul class="user-comments-list">
+        <div class="comments-section">
+          <div class="comments-header">
+            <h4>Comments</h4>
+            <button class="toggle-comments" onclick="toggleComments('{{username}}')">
+              <i class="fas fa-chevron-down"></i>
+            </button>
+          </div>
+          <div class="comments-content" id="comments-content-{{username}}" style="display: none;">
+            {{#if comments}}
               {{#each comments}}
-                <li>
-                  <span class="comment-content">{{content}}</span>
-                  <span class="comment-date">{{date}}</span>
-                </li>
+                <div class="comment">
+                  <div class="comment-content">{{this.content}}</div>
+                  <div class="comment-date">{{this.date}}</div>
+                </div>
               {{/each}}
-            </ul>
-          {{else}}
-            <div class="user-empty">No comments</div>
-          {{/if}}
+            {{else}}
+              <div class="no-comments">No comments</div>
+            {{/if}}
+          </div>
         </div>
       </div>
     {{/each}}
   </div>
   <a href="/admin/reports" class="approval-link">Approval Page</a>
 </main>
+
+<script>
+  function toggleComments(username) {
+    const content = document.getElementById(`comments-content-${username}`);
+    const button = document.querySelector(`#comments-content-${username}`).previousElementSibling.querySelector('.toggle-comments i');
+    
+    if (content.style.display === 'none') {
+      content.style.display = 'block';
+      button.classList.remove('fa-chevron-down');
+      button.classList.add('fa-chevron-up');
+    } else {
+      content.style.display = 'none';
+      button.classList.remove('fa-chevron-up');
+      button.classList.add('fa-chevron-down');
+    }
+  }
+
+  function toggleReports(username) {
+    const content = document.getElementById(`reports-content-${username}`);
+    const button = document.querySelector(`#reports-content-${username}`).previousElementSibling.querySelector('.toggle-reports i');
+    
+    if (content.style.display === 'none') {
+      content.style.display = 'block';
+      button.classList.remove('fa-chevron-down');
+      button.classList.add('fa-chevron-up');
+    } else {
+      content.style.display = 'none';
+      button.classList.remove('fa-chevron-up');
+      button.classList.add('fa-chevron-down');
+    }
+  }
+</script>
 
 <style>
 .users-header {
@@ -94,12 +138,37 @@
 .user-page-btn:hover {
   background: #1a3553;
 }
-.user-section h4 {
-  margin: 0.2em 0 0.5em 0;
-  color: #256029;
-  font-size: 1.08em;
+.user-section {
+  margin: 10px 0;
+  background: #f8f9fa;
+  border-radius: 4px;
 }
-.user-reports-list, .user-comments-list {
+.reports-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #e9ecef;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+}
+.reports-header h4 {
+  margin: 0;
+  color: #2c3e50;
+}
+.toggle-reports {
+  background: none;
+  border: none;
+  color: #2c3e50;
+  cursor: pointer;
+  padding: 5px;
+}
+.reports-content {
+  padding: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.user-reports-list {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -107,14 +176,15 @@
   flex-direction: column;
   gap: 0.5em;
 }
-.user-reports-list li, .user-comments-list li {
-  background: #fafbfc;
+.user-reports-list li {
+  background: white;
   border-radius: 6px;
   padding: 0.6em 0.9em;
   font-size: 0.98em;
   display: flex;
   flex-direction: column;
   gap: 0.2em;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 .report-offense {
   font-weight: 600;
@@ -155,5 +225,59 @@
 }
 .approval-link:hover {
   color: #1a3553;
+}
+.comments-section {
+  margin: 10px 0;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+.comments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #e9ecef;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+}
+.comments-header h4 {
+  margin: 0;
+  color: #2c3e50;
+}
+.toggle-comments {
+  background: none;
+  border: none;
+  color: #2c3e50;
+  cursor: pointer;
+  padding: 5px;
+}
+.comments-content {
+  padding: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.comment {
+  margin-bottom: 8px;
+  padding: 8px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.comment:last-child {
+  margin-bottom: 0;
+}
+.comment-content {
+  margin-bottom: 4px;
+  color: #2c3e50;
+}
+.comment-date {
+  font-size: 0.8em;
+  color: #6c757d;
+}
+.no-comments {
+  color: #6c757d;
+  font-style: italic;
+  text-align: center;
+  padding: 10px;
 }
 </style>
