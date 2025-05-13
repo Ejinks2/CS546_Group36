@@ -1,7 +1,10 @@
 const monthRef = {"01": "January", "02": "February", "03": "March", "04": "April", "05": "May", "06": "June", "07": "July", "08": "August", "09": "September", "10": "October", "11": "November", "12": "December"};
 
-function updateChartB (crimeData, chartElem, chart, borough) {
+function updateChartB (crimeData, chartElem, chart, borough, crimesList) {
   const boroughCrimes = {};
+  crimesList.forEach(crime => {
+    boroughCrimes[crime] = 0;
+  })
   crimeData.forEach(crime => {
     boroughCrimes[crime.offense] = (boroughCrimes[crime.offense] || 0) + 1;
   });
@@ -14,7 +17,7 @@ function updateChartB (crimeData, chartElem, chart, borough) {
   return new Chart(chartElem, {
     type: 'bar',
     data: {
-      labels: Object.keys(boroughCrimes),
+      labels: crimesList,
       datasets: [{
         label: label,
         data: Object.values(boroughCrimes),
@@ -40,8 +43,11 @@ function updateChartB (crimeData, chartElem, chart, borough) {
   });
 }
 
-function updateChartC (crimeData, chartElem, chart, offense) {
+function updateChartC (crimeData, chartElem, chart, offense, boroughsList) {
   const boroughCrimes = {};
+  boroughsList.forEach(borough => {
+    boroughCrimes[borough] = 0;
+  })
   crimeData.forEach(crime => {
     boroughCrimes[crime.borough] = (boroughCrimes[crime.borough] || 0) + 1;
   });
@@ -54,7 +60,7 @@ function updateChartC (crimeData, chartElem, chart, offense) {
   return new Chart(chartElem, {
     type: 'bar',
     data: {
-      labels: Object.keys(boroughCrimes),
+      labels: boroughsList,
       datasets: [{
         label: label,
         data: Object.values(boroughCrimes),
@@ -80,8 +86,11 @@ function updateChartC (crimeData, chartElem, chart, offense) {
   });
 }
 
-function updateChartT (crimeData, chartElem, chart, month) {
+function updateChartT (crimeData, chartElem, chart, month, crimesList) {
   const boroughCrimes = {};
+  crimesList.forEach(crime => {
+    boroughCrimes[crime] = 0;
+  })
   crimeData.forEach(crime => {
     boroughCrimes[crime.offense] = (boroughCrimes[crime.offense] || 0) + 1;
   });
@@ -94,7 +103,7 @@ function updateChartT (crimeData, chartElem, chart, month) {
   return new Chart(chartElem, {
     type: 'bar',
     data: {
-      labels: Object.keys(boroughCrimes),
+      labels: crimesList,
       datasets: [{
         label: label,
         data: Object.values(boroughCrimes),
