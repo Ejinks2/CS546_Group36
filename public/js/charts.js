@@ -3,18 +3,18 @@ const monthRef = {"01": "January", "02": "February", "03": "March", "04": "April
 function updateChartB (crimeData, chartElem, chart, borough, crimesList) {
   const boroughCrimes = {};
   crimesList.forEach(crime => {
-    boroughCrimes[crime] = 0;
+    boroughCrimes[crime] = 0; // make sure each crime appears in chart even if not in passed data
   })
   crimeData.forEach(crime => {
     boroughCrimes[crime.offense] = (boroughCrimes[crime.offense] || 0) + 1;
   });
 
-  if (chart) chart.destroy();
+  if (chart) chart.destroy(); // destroy existing chart before making new one
 
   let label = "Number of Crimes by type";
   if (borough !== "ALL") label = "Number of Crimes in " + borough + " by type";
 
-  return new Chart(chartElem, {
+  return new Chart(chartElem, { // charts derived from examples at chartjs.org
     type: 'bar',
     data: {
       labels: crimesList,

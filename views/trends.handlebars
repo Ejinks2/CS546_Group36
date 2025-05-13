@@ -3,7 +3,6 @@
   <div id="boroughFilters">Sort by Borough: </div>
   <div id="monthFilters">Sort by Month: </div>
   <div id="offenseFilters"> Sort by Offense: 
-    <ul id="offenseSearch"></ul>
   </div>
 </section>
 <section class="chart-section">
@@ -22,14 +21,14 @@
   const uniqueBoroughs = [...new Set(crimeData.map(crime => crime.borough))];
   const uniqueCrimes = [...new Set(crimeData.map(crime => crime.offense))];
   const uniqueMonths = [...new Set(crimeData.map(crime => crime.date.substring(5,7)))];
-  uniqueMonths.sort();
+  uniqueMonths.sort(); // sort alphabetically
   uniqueBoroughs.sort();
   uniqueCrimes.sort();
   uniqueMonths.push("ALL");
   uniqueBoroughs.push("ALL");
-  uniqueCrimes.push("ALL");
+  uniqueCrimes.push("ALL"); // add all option to each filter
   const bfilters = document.getElementById("boroughFilters");
-  uniqueBoroughs.forEach(borough => {
+  uniqueBoroughs.forEach(borough => { // dynamically create and add each filter button
       let bButton = document.createElement("button");
       bButton.textContent = borough;
       bButton.id = borough;
@@ -37,7 +36,7 @@
       bfilters.appendChild(bButton);
   });
 
-  const cfilters = document.getElementById("offenseSearch");
+  const cfilters = document.getElementById("offenseFilters");
   uniqueCrimes.forEach(crime => {
     let cButton = document.createElement("button");
     cButton.textContent = crime;
@@ -58,8 +57,9 @@
 
 
   let crimeChart;
-  crimeChart = updateChartC(crimeData, ctx, crimeChart, "ALL", uniqueBoroughs.slice(0,-1));
+  crimeChart = updateChartC(crimeData, ctx, crimeChart, "ALL", uniqueBoroughs.slice(0,-1)); // initial chart
 
+  // apply appropriate callback to each button type
   document.getElementById("boroughFilters").addEventListener("click", e => {
       if (e.target.tagName === "BUTTON") {
         const borough = e.target.id;
