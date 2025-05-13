@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { createReport } from '../data/userReports.js';
 import { validateReportInput } from '../validations/reportValidation.js';
 import { connectToDb } from '../config/mongoConnection.js';
+import xss from 'xss';
 
 const router = Router();
 
