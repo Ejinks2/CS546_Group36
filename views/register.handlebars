@@ -1,28 +1,85 @@
-<form id="registration-form" method="POST" method="post">
-  <label for="username">Username</label>
-  <input id="username" name="username">
-  <label for="password">Password</label>
-  <input id="password" name="password" type="password">
-  <label for="confirmPass">Confirm Password</label>
-  <input id="confirmPass" type="password">
-  <label for="userEmail">Email</label>
-  <input id="userEmail" name="userEmail" type="email">
-  <p>I acknowledge that the things that I do, say, and post will be recorded and that I will be held accountable for the things that I share.</p>
-  <label for="acknowledged">I agree and understand.</label>
-  <input id="acknowledged" type="checkbox">
-  <br>
-  <button name="submitButton" id="submitButton">Register</button>
-</form>
-
-{{#if hidden}}
-    <ul id="errors" hidden>{{error}}</ul>
-{{else}}
-    <ul id="errors">{{error}}</ul>
-{{/if}}
+<div class="registration-card">
+  <form id="registration-form" class="registration-form" method="POST" method="post">
+    <label for="username">Username</label>
+    <input id="username" name="username">
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password">
+    <label for="confirmPass">Confirm Password</label>
+    <input id="confirmPass" type="password">
+    <label for="userEmail">Email</label>
+    <input id="userEmail" name="userEmail" type="email">
+    <p>I acknowledge that the things that I do, say, and post will be recorded and that I will be held accountable for the things that I share.</p>
+    <label id="acknowledgedLabel" for="acknowledged">I agree and understand.</label>
+    <input id="acknowledged" type="checkbox">
+    <br>
+    {{#unless error}}
+      <ul id="errors" class="registration-error">{{error}}</ul>
+    {{/unless}}
+    <button name="submitButton" id="submitButton" class="registration-submit-btn">Register</button>
+  </form>
+</div>
 
 <style>
-#errors {
-  color: red;
-  font-size: 0.98rem;
+.registration-card {
+  max-width: 480px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.09);
+  padding: 2.2rem 2rem 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.registration-card h2 {
+  margin-bottom: 0.5rem;
+  color: #2d5a88;
+  font-size: 1.5rem;
+  text-align: center;
+}
+.registration-error {
+  background: #ffcdd2;
+  color: #b71c1c;
+  border-radius: 6px;
+  padding: 0.7em 1em;
+  margin-bottom: 1em;
+  text-align: center;
+}
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.registration-form label {
+  font-weight: 600;
+  color: #2d5a88;
+  margin-bottom: 0.1em;
+}
+.registration-form input {
+  padding: 0.6em 0.9em;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fafbfc;
+  transition: border 0.2s;
+}
+.registration-form input:focus {
+  border: 1.5px solid #2d5a88;
+  outline: none;
+}
+.registration-submit-btn {
+  background: #2d5a88;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7em 1.5em;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5em;
+  transition: background 0.2s;
+}
+.registration-submit-btn:hover {
+  background: #1a3553;
 }
 </style>
