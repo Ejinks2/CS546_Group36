@@ -4,7 +4,7 @@ import { register } from "../data/users.js";
 
 router.route('').get(async (req, res) => {
     const error = req.query.error;
-    return res.render('register', { title: "Register", error });
+    return res.render('register', { title: "Register", error, newcss: 'register'});
 })
 .post(async (req, res) => {
     try {
