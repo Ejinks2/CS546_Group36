@@ -10,7 +10,8 @@ router.get('/', async (req, res) => {
   try {
     res.render('report', {
       title: 'Submit a Crime Report',
-      links: { Home: '/', Admin: '/admin', Search: '/search', Report: '/report' }
+      links: { Home: '/', Admin: '/admin', Search: '/search', Report: '/report' },
+      newcss: 'report'
     });
   } catch (e) {
     res.status(500).render('error', { message: 'Error loading form' });
@@ -37,13 +38,15 @@ router.post('/', async (req, res) => {
       title: 'Submit a Crime Report',
       success: true,
       report: newReport,
+      newcss: 'report'
     });
     
   } catch (e) {
     res.status(400).render('report', {
       title: 'Submit a Crime Report',
       error: typeof e === 'string' ? e : 'Invalid input. Please try again.',
-      input: req.body
+      input: req.body,
+      newcss: 'report'
     });
   }
 });
