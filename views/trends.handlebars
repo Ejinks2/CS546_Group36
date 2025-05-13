@@ -12,7 +12,8 @@
 
 <script>
   const ctx = document.getElementById('myChart');
-  const crimeData = {{{crimes}}};
+  let crimeData = {{{crimes}}};
+  crimeData = crimeData.filter(c => c.borough !== "(null)");
   
   const uniqueBoroughs = [...new Set(crimeData.map(crime => crime.borough))];
   const uniqueCrimes = [...new Set(crimeData.map(crime => crime.offense))];
@@ -25,12 +26,10 @@
   uniqueCrimes.push("ALL");
   const bfilters = document.getElementById("boroughFilters");
   uniqueBoroughs.forEach(borough => {
-    if (borough !== "(null)") {
       let bButton = document.createElement("button");
       bButton.textContent = borough;
       bButton.id = borough;
       bfilters.appendChild(bButton);
-    }
   });
 
   const cfilters = document.getElementById("offenseSearch");
@@ -54,13 +53,13 @@
 
 
   let crimeChart;
-  crimeChart = updateChartC(crimeData, ctx, crimeChart, "ALL");
+  crimeChart = updateChartC(crimeData, ctx, crimeChart, "ALL", uniqueBoroughs.slice(0,-1));
 
   document.getElementById("boroughFilters").addEventListener("click", e => {
       if (e.target.tagName === "BUTTON") {
         const borough = e.target.id;
         const filtered = borough === "ALL" ? crimeData : crimeData.filter(c => c.borough === borough);
-        crimeChart = updateChartB(filtered, document.getElementById("myChart"), crimeChart, borough);
+        crimeChart = updateChartB(filtered, document.getElementById("myChart"), crimeChart, borough, uniqueCrimes.slice(0,-1));
       }
   });
 
@@ -68,7 +67,7 @@
       if (e.target.tagName === "BUTTON") {
         const month = e.target.id;
         const filtered = month === "ALL" ? crimeData : crimeData.filter(c => c.date.substring(5,7) === month);
-        crimeChart = updateChartT(filtered, document.getElementById("myChart"), crimeChart, month);
+        crimeChart = updateChartT(filtered, document.getElementById("myChart"), crimeChart, month, uniqueCrimes.slice(0,-1));
       }
   });
 
@@ -76,7 +75,7 @@
       if (e.target.tagName === "BUTTON") {
         const crime = e.target.id;
         const filtered = crime === "ALL" ? crimeData : crimeData.filter(c => c.offense === crime);
-        crimeChart = updateChartC(filtered, document.getElementById("myChart"), crimeChart, crime);
+        crimeChart = updateChartC(filtered, document.getElementById("myChart"), crimeChart, crime, uniqueBoroughs.slice(0,-1));
       }
   });
   </script>
