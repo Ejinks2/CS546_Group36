@@ -22,8 +22,10 @@ router.route('/:id').get(async (req, res) => {
     const id = req.params.id;
     const user = await collection.findOne({ username: id });
 
+    const userIsSelf = (id === req.session.user.username) ? true : false
+
     if (!user) return res.redirect('/users');
-    return res.render('user', { title: user.username, user });
+    return res.render('user', { title: user.username, user, userIsSelf });
 })
 .patch(async (req, res) => {
     const id = req.params.id;

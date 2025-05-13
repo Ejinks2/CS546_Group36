@@ -1,7 +1,76 @@
-<form id="login-form" method="post">
-    <lable for="username">Username: </lable>
-    <input id="username" name="username" type="text">
-    <label for="password">Password: </label>
-    <input id="password" name="password" type="password">
-    <button id="submit-button" type="submit">Submit</button>
-</form>
+<div class="login-card">
+    <form id="login-form" class="login-form" method="post">
+        <label for="username">Username: </label>
+        <input id="username" name="username" type="text">
+        <label for="password">Password: </label>
+        <input id="password" name="password" type="password">
+        <button id="submit-button" type="submit" class="login-submit-btn">Submit</button>
+    </form>
+    {{#if error}}
+        <p class="login-error">Invalid username or password.</p>
+    {{/if}}
+</div>
+<style>
+.login-card {
+  max-width: 480px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.09);
+  padding: 2.2rem 2rem 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.login-card h2 {
+  margin-bottom: 0.5rem;
+  color: #2d5a88;
+  font-size: 1.5rem;
+  text-align: center;
+}
+.login-error {
+  background: #ffcdd2;
+  color: #b71c1c;
+  border-radius: 6px;
+  padding: 0.7em 1em;
+  margin-bottom: 1em;
+  text-align: center;
+}
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.login-form label {
+  font-weight: 600;
+  color: #2d5a88;
+  margin-bottom: 0.1em;
+}
+.login-form input {
+  padding: 0.6em 0.9em;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fafbfc;
+  transition: border 0.2s;
+}
+.login-form input:focus {
+  border: 1.5px solid #2d5a88;
+  outline: none;
+}
+.login-submit-btn {
+  background: #2d5a88;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7em 1.5em;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5em;
+  transition: background 0.2s;
+}
+.login-submit-btn:hover {
+  background: #1a3553;
+}
+</style>
