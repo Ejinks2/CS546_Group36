@@ -3,7 +3,7 @@ const router = Router();
 import { register } from "../data/users.js";
 
 router.route('').get(async (req, res) => {
-    const error = req.query.error;
+    const error = (req.query.error === "1") ? true : false;
     return res.render('register', { title: "Register", error, newcss: 'register'});
 })
 .post(async (req, res) => {
