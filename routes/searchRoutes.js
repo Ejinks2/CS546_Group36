@@ -95,7 +95,8 @@ router.route("/trends")
 
     res.render("trends", {
       title: "Crime Trends",
-      crimes: JSON.stringify(limitedCrimes)
+      crimes: JSON.stringify(limitedCrimes),
+      newcss: "charts"
     });
   } catch (e) {
     res.status(500).render("search", {

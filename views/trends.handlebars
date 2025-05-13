@@ -1,11 +1,15 @@
-<div>
+<main class="charts-container">
+<section class="filters-section">
   <div id="boroughFilters">Sort by Borough: </div>
   <div id="monthFilters">Sort by Month: </div>
   <div id="offenseFilters"> Sort by Offense: 
     <ul id="offenseSearch"></ul>
   </div>
+</section>
+<section class="chart-section">
   <canvas id="myChart"></canvas>
-</div>
+</section>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/js/charts.js"></script>
@@ -29,17 +33,17 @@
       let bButton = document.createElement("button");
       bButton.textContent = borough;
       bButton.id = borough;
+      bButton.classList.add("btn");
       bfilters.appendChild(bButton);
   });
 
   const cfilters = document.getElementById("offenseSearch");
   uniqueCrimes.forEach(crime => {
-    let listItem = document.createElement("li");
     let cButton = document.createElement("button");
     cButton.textContent = crime;
     cButton.id = crime;
-    listItem.appendChild(cButton);
-    cfilters.appendChild(listItem);
+    cButton.classList.add("btn");
+    cfilters.appendChild(cButton);
   });
 
   const tfilters = document.getElementById("monthFilters");
@@ -47,6 +51,7 @@
     let tButton = document.createElement("button");
     tButton.textContent = typeof monthRef[month] === "undefined" ? "ALL" : monthRef[month];
     tButton.id = month;
+    tButton.classList.add("btn");
     tfilters.appendChild(tButton);
   });
 

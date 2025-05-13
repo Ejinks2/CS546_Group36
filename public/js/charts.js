@@ -11,19 +11,25 @@ function updateChartB (crimeData, chartElem, chart, borough, crimesList) {
 
   if (chart) chart.destroy();
 
-  let label = "Number of Crimes";
-  if (borough !== "ALL") label = "Number of Crimes in " + borough;
+  let label = "Number of Crimes by type";
+  if (borough !== "ALL") label = "Number of Crimes in " + borough + " by type";
 
   return new Chart(chartElem, {
     type: 'bar',
     data: {
       labels: crimesList,
       datasets: [{
-        label: label,
+        label: "Crime Count",
         data: Object.values(boroughCrimes),
       }]
     },
     options: {
+      plugins: {
+        title: {
+          display: true,
+          text: label
+        }
+      },
       scales: {
         y: {
           beginAtZero: true,
@@ -62,11 +68,17 @@ function updateChartC (crimeData, chartElem, chart, offense, boroughsList) {
     data: {
       labels: boroughsList,
       datasets: [{
-        label: label,
+        label: "Crime Count",
         data: Object.values(boroughCrimes),
       }]
     },
     options: {
+      plugins: {
+        title: {
+          display: true,
+          text: label
+        }
+      },
       scales: {
         y: {
           beginAtZero: true,
@@ -97,19 +109,25 @@ function updateChartT (crimeData, chartElem, chart, month, crimesList) {
 
   if (chart) chart.destroy();
 
-  let label = "Number of Crimes in " + monthRef[month];
-  if (month === "ALL") label = "Number of Crimes";
+  let label = "Number of Crimes in " + monthRef[month] + " by type";
+  if (month === "ALL") label = "Number of Crimes by type";
 
   return new Chart(chartElem, {
     type: 'bar',
     data: {
       labels: crimesList,
       datasets: [{
-        label: label,
+        label: "Crime Count",
         data: Object.values(boroughCrimes),
       }]
     },
     options: {
+      plugins: {
+        title: {
+          display: true,
+          text: label
+        }
+      },
       scales: {
         y: {
           beginAtZero: true,
