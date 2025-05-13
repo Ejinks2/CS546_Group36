@@ -9,12 +9,14 @@
     <label for="userEmail">Email</label>
     <input id="userEmail" name="userEmail" type="email">
     <p>I acknowledge that the things that I do, say, and post will be recorded and that I will be held accountable for the things that I share.</p>
-    <label id="acknowledgedLabel" for="acknowledged">I agree and understand.</label>
-    <input id="acknowledged" type="checkbox">
+    <div class="acknowledgement">
+      <label id="acknowledgedLabel" for="acknowledged">I agree and understand.</label>
+      <input id="acknowledged" type="checkbox">
+    </div>
     <br>
-    {{#unless error}}
+    {{#if error}}
       <ul id="errors" class="registration-error">{{error}}</ul>
-    {{/unless}}
+    {{/if}}
     <button name="submitButton" id="submitButton" class="registration-submit-btn">Register</button>
   </form>
 </div>
@@ -81,5 +83,10 @@
 }
 .registration-submit-btn:hover {
   background: #1a3553;
+}
+.acknowledgement {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 </style>
