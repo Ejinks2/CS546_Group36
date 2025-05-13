@@ -2,6 +2,7 @@ import express from 'express';
 import { getOfficialCrimes } from "../data/officialCrimes.js";
 import { getAllReports } from '../data/userReports.js';
 import * as stringValidation from '../validations/stringValidation.js';
+import xss from 'xss';
 
 const router = express.Router();
 
@@ -49,7 +50,7 @@ router.route("/")
 .post(async (req, res) => {
   let search_query;
   try {
-    search_query = stringValidation.checkString(req.body.searchCrime, 'crime search box');
+    search_query = xss(stringValidation.checkString(req.body.searchCrime, 'crime search box'));
   } catch (e) {
     return res.status(400).render('search', {
       title: "Search Crimes",
