@@ -6,7 +6,7 @@ router
     .route('')
         .get(async (req, res) => {
             let error = "";
-            if (req.status === 400) error = "Could not log in.";
+            if (req.query.error === "1") error = true;
             res.render('login', {
                 error, title: "Login"
             });
@@ -21,7 +21,7 @@ router
                     return res.redirect('/');
                 }
             } catch (e) {
-                return res.status(400).redirect('/login');
+                return res.status(400).redirect('/login?error=1');
             }
         });
 

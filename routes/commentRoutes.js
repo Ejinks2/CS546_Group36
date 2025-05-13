@@ -3,6 +3,7 @@ import express from 'express';
 import { addComment, getCommentsByCrimeId, deleteComment, getCommentById } from '../data/comments.js';
 import { getFlagCount } from '../data/flags.js';
 import { getUserById } from '../data/users.js';
+import { connectToDb } from '../config/mongoConnection.js';
 
 const router = express.Router();
 
@@ -67,6 +68,11 @@ router.post('/', async (req, res) => {
     const username = req.session.user.username;
     const commentId = await addComment(crimeId, username, content);
     const comment = await getCommentById(commentId);
+
+    const db = await connectToDb();
+    const users = db.collection('users');
+
+    await users.findOneAndUpdate({ username }, { $push: { comments: comment }});
 
     res.json({
       ...comment,

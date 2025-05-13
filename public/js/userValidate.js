@@ -2,6 +2,7 @@ let login = document.getElementById('login-form');
 
 if(login) {
     login.addEventListener('submit', function(event) {
+        err.hidden = true;
         let username = document.getElementById('username');
         let password = document.getElementById('password');
 
@@ -23,12 +24,8 @@ if(login) {
         if (username.length < 5 || username.length > 20) errStatus = true;
 
         if (errStatus) {
-            if (!document.getElementById('error')) {
-                const err = document.createElement('p');
-                err.id = 'error';
-                err.innerHTML = "Invalid username or password.";
-                document.body.appendChild(err);
-            }
+            const err = document.getElementById('error');
+            err.hidden = false;
         } else {
             login.submit();
         }
