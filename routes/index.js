@@ -12,7 +12,7 @@ import { Router } from "express";
 const router = Router();
 
 router.route('').get(async (req, res) => {
-    return res.render('home', { newcss: 'home', base: 'true' });
+    return res.render('home', { newcss: 'home', base: 'true', title: 'Home Page' });
 });
 
 const setRoutes = (app) => {
