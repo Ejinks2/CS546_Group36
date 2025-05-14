@@ -1,6 +1,7 @@
 import { connectToDb } from "../config/mongoConnection.js";
 import bcrypt from "bcryptjs";
 import { ObjectId } from 'mongodb';
+import xss from 'xss';
 
 export const login = async (username, password) => {
     const db = await connectToDb();
@@ -14,6 +15,9 @@ export const login = async (username, password) => {
     username = username.toLowerCase();
 
     if (!username || !password) throw "Invalid username or password.";
+    username = xss(username);
+    password = xss(password);
+
 
     const uname = /^[a-zA-Z0-9]+$/;
     if (!uname.test(username)) throw "";
@@ -39,6 +43,9 @@ export const register = async (username, password, email) => {
     username = username.toLowerCase();
 
     if (!username || !password) throw "Invalid username or password.";
+    username = xss(username);
+    password = xss(password);
+    email = xss(email);
 
     const uname = /^[a-zA-Z0-9]+$/;
     if (!uname.test(username)) throw "";
