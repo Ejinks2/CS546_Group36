@@ -1,5 +1,8 @@
 <h2>{{crime.offense}}</h2>
 <h3>{{crime.description}}</h3>
+{{#if crime.suspectDescription}}
+    <h3>{{suspectDescription}}</h3>
+{{/if}}
 <h3>{{crime.location}}, {{crime.borough}}, {{crime.city}}</h3>
 
 {{#each user.comments}}

@@ -13,6 +13,9 @@
         <span>{{location}}, {{borough}}</span>
       </div>
       <p class="feed-report-description">{{description}}</p>
+      {{#if suspectDescription}}
+        <p class="feed-report-suspect-description">{{suspectDescription}}</p>
+      {{/if}}
       <div class="feed-report-flags">
         {{#if ../user}}
           <button class="flag-btn" data-type="report" data-id="{{_id}}" data-flagged="{{hasFlagged}}" title="Flag this report">

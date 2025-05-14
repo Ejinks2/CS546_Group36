@@ -11,6 +11,7 @@ export const validateReportInput = (data) => {
     city,
     borough,
     description,
+    suspectDescription,
     date
   } = data;
 
@@ -57,6 +58,8 @@ export const validateReportInput = (data) => {
     errors.push("A valid date is required");
   }
 
+  suspectDescription = suspectDescription.trim();
+
   if (errors.length > 0) {
     throw errors.join(", ");
   }
@@ -67,6 +70,7 @@ export const validateReportInput = (data) => {
     city,
     borough,
     description,
+    suspectDescription,
     date,
   };
 };
