@@ -3,6 +3,8 @@
 
 The Crime Analysis Web Application aims to provide users with insights into crime patterns within a given city or region. Users will be able to log in, search for crime data, visualize trends, and contribute reports. The application will utilize a MongoDB database to store user-generated crime reports and publicly available crime statistics.
 
+Run npm start to run the server which can be accessed at localhost:3000
+
 ## Core Features
 ---------------
 
