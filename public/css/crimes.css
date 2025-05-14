@@ -176,3 +176,7 @@
 .login-prompt a:hover {
   text-decoration: underline;
 }
+
+.clientError {
+  color: red;
+}
