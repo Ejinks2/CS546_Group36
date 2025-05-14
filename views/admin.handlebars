@@ -24,6 +24,9 @@
               <span class="admin-report-id">ID: {{_id}}</span>
             </div>
             <p class="admin-report-description">{{description}}</p>
+            {{#if suspectDescription}}
+              <p class="admin-report-suspect-description">{{suspectDescription}}</p>
+            {{/if}}
             <div class="admin-report-flags">
               <span class="flag-icon">🚩</span>
               <span class="flag-count">{{flagCount}}</span> Flags
@@ -74,6 +77,9 @@
               <span class="admin-report-id">ID: {{_id}}</span>
             </div>
             <p class="admin-report-description">{{description}}</p>
+            {{#if suspectDescription}}
+              <p class="admin-report-suspect-description">{{suspectDescription}}</p>
+            {{/if}}
             <div class="admin-report-flags">
               <span class="flag-icon">🚩</span>
               <span class="flag-count">{{flagCount}}</span> Flags
@@ -116,6 +122,9 @@
               <span class="admin-report-id">ID: {{_id}}</span>
             </div>
             <p class="admin-report-description">{{description}}</p>
+            {{#if suspectDescription}}
+              <p class="admin-report-suspect-description">{{suspectDescription}}</p>
+            {{/if}}
             <div class="admin-report-flags">
               <span class="flag-icon">🚩</span>
               <span class="flag-count">{{flagCount}}</span> Flags
