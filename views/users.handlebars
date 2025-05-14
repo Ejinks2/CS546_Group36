@@ -23,6 +23,9 @@
                     <span class="report-meta">{{location}}, {{borough}}</span>
                     <span class="report-date">{{date}}</span>
                     <span class="report-desc">{{description}}</span>
+                    {{#if suspectDescription}}
+                      <span class="report-suspect-desc">{{suspectDescription}}</span>
+                    {{/if}}
                   </li>
                 {{/each}}
               </ul>

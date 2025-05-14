@@ -4,6 +4,7 @@ import { addComment, getCommentsByCrimeId, deleteComment, getCommentById } from 
 import { getFlagCount } from '../data/flags.js';
 import { getUserById } from '../data/users.js';
 import { connectToDb } from '../config/mongoConnection.js';
+import xss from 'xss';
 
 const router = express.Router();
 
@@ -64,6 +65,8 @@ router.post('/', async (req, res) => {
     if (!crimeId || !content) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
+    crimeId = xss(crimeId);
+    content = xss(content);
 
     const username = req.session.user.username;
     const commentId = await addComment(crimeId, username, content);

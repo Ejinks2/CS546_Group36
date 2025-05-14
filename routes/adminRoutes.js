@@ -2,6 +2,7 @@ import { Router } from "express";
 import { getAllReports, updateReportStatus } from "../data/userReports.js";
 import { getFlagCount, getFlagsByContentId } from "../data/flags.js";
 import { ObjectId } from "mongodb";
+import xss from 'xss';
 
 
 const router = Router();
@@ -39,7 +40,7 @@ router.route('/reports').get(async (req, res) => {
 // Approve a report
 router.route('/approve/:id').post(async (req, res) => {
   try {
-    const id = req.params.id;
+    const id = xss(req.params.id);
     await updateReportStatus(id, 'approved');
     res.redirect('/admin/reports');
   } catch (e) {
@@ -50,7 +51,7 @@ router.route('/approve/:id').post(async (req, res) => {
 // Reject a report
 router.route('/reject/:id').post(async (req, res) => {
   try {
-    const id = req.params.id;
+    const id = xss(req.params.id);
     await updateReportStatus(id, 'rejected');
     res.redirect('/admin/reports');
   } catch (e) {
