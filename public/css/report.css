@@ -1,0 +1,79 @@
+.report-card {
+  max-width: 480px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.09);
+  padding: 2.2rem 2rem 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.report-card h2 {
+  margin-bottom: 0.5rem;
+  color: #2d5a88;
+  font-size: 1.5rem;
+  text-align: center;
+}
+.report-error {
+  background: #ffcdd2;
+  color: #b71c1c;
+  border-radius: 6px;
+  padding: 0.7em 1em;
+  margin-bottom: 1em;
+  text-align: center;
+}
+.report-success {
+  background: #c8e6c9;
+  color: #256029;
+  border-radius: 6px;
+  padding: 0.7em 1em;
+  margin-bottom: 1em;
+  text-align: center;
+}
+.report-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.form-group label {
+  font-weight: 600;
+  color: #2d5a88;
+  margin-bottom: 0.1em;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.6em 0.9em;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fafbfc;
+  transition: border 0.2s;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border: 1.5px solid #2d5a88;
+  outline: none;
+}
+.report-submit-btn {
+  background: #2d5a88;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7em 1.5em;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5em;
+  transition: background 0.2s;
+}
+.report-submit-btn:hover {
+  background: #1a3553;
+}
