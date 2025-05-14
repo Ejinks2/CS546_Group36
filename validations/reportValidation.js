@@ -57,6 +57,10 @@ export const validateReportInput = (data) => {
     errors.push("A valid date is required");
   }
 
+  const currDate = new Date();
+
+  if (new Date(date) > new Date(currDate)) errors.push("Invalid date selected.");
+
   if (errors.length > 0) {
     throw errors.join(", ");
   }
