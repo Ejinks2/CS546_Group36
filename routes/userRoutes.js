@@ -25,7 +25,7 @@ router.route('').get(async (req, res) => {
         };
     }));
 
-    return res.render('users', { title: "User Database", users: usersWithComments });
+    return res.render('users', { title: "User Database", users: usersWithComments, newcss: 'users' });
 })
 .post(async (req, res) => {
     return res.redirect('/');
@@ -49,7 +49,7 @@ router.route('/:id').get(async (req, res) => {
 
     const userIsSelf = (id === req.session.user.username) ? true : false;
 
-    return res.render('user', { title: user.username, user: userWithComments, userIsSelf });
+    return res.render('user', { title: user.username, user: userWithComments, userIsSelf, newcss: 'user' });
 })
 .patch(async (req, res) => {
     const id = req.params.id;

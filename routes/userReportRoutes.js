@@ -21,7 +21,7 @@ router.route('/').get(async (req, res) => {
       flagCount: await getFlagCount(report._id, 'report'),
       hasFlagged: username ? await hasUserFlagged(report._id, 'report', username) : false
     })));
-    res.render('feed', {userReport: userReport, title: "User Report Feed"})
+    res.render('feed', {userReport: userReport, title: "User Report Feed", newcss: 'feed'})
   } catch (e) {
     res.status(500).render('home', {title: "Home"})
   }
