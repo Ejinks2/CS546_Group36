@@ -20,10 +20,9 @@ The Crime Analysis Web Application aims to provide users with insights into crim
 ## Extra Features
 ----------------
 
-* Notify a nearby police station of crime. (Google Places API)
-* Finds the nearest police station and displays the stations’ phone number.
-* Suspect Description
-* Allow users to describe a suspect in a crime.
+* Users can create comments on reported crimes.
+* Administrators can ban users or make them admins.
+* Crime reports can be reported in the case of inaccurate or fraudulent claims.
 
 ### Admin Logins
 ----------------
