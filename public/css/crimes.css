@@ -1,7 +1,7 @@
 .search-crime-container {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 2rem auto;
-  padding: 1.5rem;
+  padding: 2rem;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -11,7 +11,15 @@
   display: flex;
   gap: 0.5rem;
   margin-bottom: 2rem;
+  align-items: center;
 }
+
+.search-form input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
 
 .search-form input[type="text"] {
   flex: 1;
@@ -22,19 +30,17 @@
 }
 
 .search-form button {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  background-color: #2978b5;
-  color: #fff;
-  font-size: 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color .2s ease;
-}
+    padding: 0.5rem 1rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
 
 .search-form button:hover {
-  background-color: #1e5a8a;
-}
+    background-color: #2980b9;
+  }
 
 .crime-list {
   list-style: none;
@@ -50,5 +56,123 @@
   border-radius: 6px;
   padding: 1rem;
   line-height: 1.4;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
+}
+
+.comments-section {
+  margin: 10px 0;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.comments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #e9ecef;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+}
+
+.comments-header h4 {
+  margin: 0;
+  color: #2c3e50;
+}
+
+.toggle-comments {
+  background: none;
+  border: none;
+  color: #2c3e50;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.comments-content {
+  padding: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.comment {
+  margin-bottom: 8px;
+  padding: 8px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.comment:last-child {
+  margin-bottom: 0;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+}
+
+.comment-author {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.comment-date {
+  color: #7f8c8d;
+}
+
+.comment-content {
+  color: #34495e;
+}
+
+.no-comments {
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.comment-form {
+  margin-top: 10px;
+}
+
+.comment-form textarea {
+  width: 100%;
+  min-height: 60px;
+  padding: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.comment-form button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.comment-form button:hover {
+  background-color: #2980b9;
+}
+
+.login-prompt {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  text-align: center;
+  color: #7f8c8d;
+}
+
+.login-prompt a {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-prompt a:hover {
+  text-decoration: underline;
 }
