@@ -1,13 +1,14 @@
 <main>
   <div class="report-card">
     <h2>Submit a Crime Report</h2>
-    {{#if error}}
+    {{!-- {{#if error}}
       <div class="report-error">{{error}}</div>
-    {{/if}}
+    {{/if}} --}}
+    <ul id="errors" class="report-error" hidden></ul>
     {{#if success}}
       <div class="report-success">Report submitted successfully!</div>
     {{/if}}
-    <form method="POST" action="/report" class="report-form">
+    <form method="POST" action="/report" class="report-form" id="report">
       <div class="form-group">
         <label for="offense">Offense</label>
         <select id="offense" name="offense" required>
@@ -57,3 +58,4 @@
     </form>
   </div>
 </main>
+<script src="/js/report.js"></script>

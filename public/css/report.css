@@ -77,3 +77,6 @@
 .report-submit-btn:hover {
   background: #1a3553;
 }
+li {
+  list-style-type: none;
+}
