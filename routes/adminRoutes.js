@@ -29,10 +29,11 @@ router.route('/reports').get(async (req, res) => {
       title: "User Reports",
       pendingReports: await mapReports(pending),
       approvedReports: await mapReports(approved),
-      rejectedReports: await mapReports(rejected)
+      rejectedReports: await mapReports(rejected),
+      newcss: 'admin'
     });
   } catch (e) {
-    res.status(500).render('admin', { title: "User Reports", error: e });
+    res.status(500).render('admin', { title: "User Reports", error: e, newcss: 'admin' });
   }
 });
 
@@ -43,7 +44,7 @@ router.route('/approve/:id').post(async (req, res) => {
     await updateReportStatus(id, 'approved');
     res.redirect('/admin/reports');
   } catch (e) {
-    res.status(400).render('admin', { title: "Error Approving Report", error: e });
+    res.status(400).render('admin', { title: "Error Approving Report", error: e, newcss: 'admin' });
   }
 });
 
@@ -54,12 +55,8 @@ router.route('/reject/:id').post(async (req, res) => {
     await updateReportStatus(id, 'rejected');
     res.redirect('/admin/reports');
   } catch (e) {
-    res.status(400).render('admin', { title: "Error Rejecting Report", error: e });
+    res.status(400).render('admin', { title: "Error Rejecting Report", error: e, newcss: 'admin' });
   }
-});
-
-router.route('/comments').get(async (req, res) => {
-  
 });
 
 
