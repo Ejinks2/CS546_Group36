@@ -77,6 +77,12 @@ app.use('/report', (req, res, next) => {
   next();
 })
 
+app.use('/comment', (req, res, next) => {
+  if (!req.session.user) return res.redirect('/login');
+
+  next();
+})
+
 app.use('/logout', (req, res, next) => {
   if (req.session.user) {
     req.session.user = null;

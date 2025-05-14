@@ -57,10 +57,6 @@ router.route('/reject/:id').post(async (req, res) => {
   }
 });
 
-router.route('/comments').get(async (req, res) => {
-  
-});
-
 
 
 export default router;
