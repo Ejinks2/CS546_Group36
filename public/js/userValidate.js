@@ -2,6 +2,7 @@ let login = document.getElementById('login-form');
 
 if(login) {
     login.addEventListener('submit', function(event) {
+        let err = document.getElementById('error');
         err.hidden = true;
         let username = document.getElementById('username');
         let password = document.getElementById('password');
@@ -24,7 +25,6 @@ if(login) {
         if (username.length < 5 || username.length > 20) errStatus = true;
 
         if (errStatus) {
-            const err = document.getElementById('error');
             err.hidden = false;
         } else {
             login.submit();
