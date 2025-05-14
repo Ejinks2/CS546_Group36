@@ -10,7 +10,7 @@ router.route('').get(async (req, res) => {
     try {
         const user = req.body;
         await register(user.username, user.password, user.userEmail);
-        return res.redirect('/home');
+        return res.redirect('/login');
     } catch (e) {
         return res.redirect(`/register?error=${e}`);
     }

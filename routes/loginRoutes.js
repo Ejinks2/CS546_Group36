@@ -15,7 +15,7 @@ router.route('')
       if (info) {
         req.session.user = { username: info.username, admin: info.admin };
         if (req.session.user.admin) return res.redirect('/admin');
-        return res.redirect('/');
+        return res.redirect('/search');
       }
     } catch (e) {
       return res.status(400).redirect('/login?error=1');
