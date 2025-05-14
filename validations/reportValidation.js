@@ -1,3 +1,4 @@
+import xss from 'xss';
 export const validateReportInput = (data) => {
   const errors = [];
 
@@ -19,6 +20,7 @@ export const validateReportInput = (data) => {
     errors.push("Offense is required");
   }
   offense = offense.trim()
+  offense = xss(offense);
 
   // Location
   if (
@@ -29,12 +31,14 @@ export const validateReportInput = (data) => {
     errors.push("Location is required");
   }
   location = location.trim()
+  location = xss(location);
 
   // Borough
   if (!borough || typeof borough !== "string" || borough.trim().length === 0) {
     errors.push("Borough is required");
   }
   borough = borough.trim()
+  borough = xss(borough);
 
   // City
   // if (!city || city.trim().toLowerCase() !== 'new york') {
@@ -51,6 +55,7 @@ export const validateReportInput = (data) => {
     errors.push("Description must be at least 10 characters long");
   }
   description = description.trim()
+  description = xss(description);
 
   // Date
   if (!date || isNaN(Date.parse(date))) {
