@@ -2,6 +2,7 @@
   {{#if error}}
   <p>{{error}}</p>
   {{/if}}
+  <p id="clientError" class="clientError"></p>
   <form action="/search" method="POST" class="search-form">
     <label id="search-crimes" for="searchCrime">Search for Crime</label>
     <input type="text" id="searchCrime" name="searchCrime" placeholder="Search for Crime by type...">
@@ -42,6 +43,22 @@
 </main>
 
 <script>
+   document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('.search-form');
+    const input = document.getElementById('searchCrime');
+    const err = document.getElementById('clientError');
+
+    form.addEventListener('submit', e => {
+      err.textContent = '';
+
+      if (!input.value.trim()) {
+        e.preventDefault();
+        err.textContent = 'Search cannot be empty.';
+        input.focus();
+      }
+    });
+  });
+  
   // Function to toggle comments visibility
   function toggleComments(crimeId) {
     const content = document.getElementById(`comments-content-${crimeId}`);

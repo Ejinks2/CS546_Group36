@@ -1,5 +1,6 @@
 import express from 'express';
 import { addFlag, removeFlag, hasUserFlagged, getFlagCount } from '../data/flags.js';
+import xss from 'xss';
 
 const router = express.Router();
 
@@ -18,6 +19,9 @@ router.post('/:contentType/:contentId', async (req, res) => {
     if (!['comment', 'report'].includes(contentType)) {
       return res.status(400).json({ error: 'Invalid content type' });
     }
+    contentType = xss(contentType);
+    contentId = xss(contentId);
+    reason = xss(reason);
 
     // Check if user has already flagged this content
     const alreadyFlagged = await hasUserFlagged(contentId, contentType, userId);

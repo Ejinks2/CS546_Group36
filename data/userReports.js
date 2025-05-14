@@ -17,6 +17,7 @@ export const createReport = async (data, user) => {
     borough: data.borough?.trim(),
     city: data.city?.trim(),
     description: data.description?.trim(),
+    suspectDescription: data.suspectDescription?.trim(),
     date: data.date,
     status: 'pending',
     user,
